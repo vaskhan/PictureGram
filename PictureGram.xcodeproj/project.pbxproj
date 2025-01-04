@@ -32,6 +32,7 @@
 		486514FF2D18120C00BF6118 /* No Active.png in Resources */ = {isa = PBXBuildFile; fileRef = 486514FE2D18120C00BF6118 /* No Active.png */; };
 		486515022D181B9700BF6118 /* Date + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486515012D181B9700BF6118 /* Date + Extensions.swift */; };
 		487048DA2D22BD9200ECA14A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487048D92D22BD9200ECA14A /* ProfileViewController.swift */; };
+		48774B462D26B78C000563CF /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48774B452D26B78C000563CF /* SingleImageViewController.swift */; };
 		48BF2B662D14B20D00117091 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BF2B652D14B20D00117091 /* AppDelegate.swift */; };
 		48BF2B682D14B20D00117091 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BF2B672D14B20D00117091 /* SceneDelegate.swift */; };
 		48BF2B6A2D14B20D00117091 /* ImagesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BF2B692D14B20D00117091 /* ImagesListViewController.swift */; };
@@ -67,6 +68,7 @@
 		486514FE2D18120C00BF6118 /* No Active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "No Active.png"; sourceTree = "<group>"; };
 		486515012D181B9700BF6118 /* Date + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date + Extensions.swift"; sourceTree = "<group>"; };
 		487048D92D22BD9200ECA14A /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		48774B452D26B78C000563CF /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 		48BF2B622D14B20D00117091 /* PictureGram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PictureGram.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48BF2B652D14B20D00117091 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		48BF2B672D14B20D00117091 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -102,7 +104,6 @@
 			children = (
 				48BF2B692D14B20D00117091 /* ImagesListViewController.swift */,
 				4802D52F2D1784D50060ADA0 /* ImagesListCell.swift */,
-				487048D92D22BD9200ECA14A /* ProfileViewController.swift */,
 			);
 			path = ImagesList;
 			sourceTree = "<group>";
@@ -153,6 +154,22 @@
 			path = Presentation;
 			sourceTree = "<group>";
 		};
+		48774B472D2720C9000563CF /* SingleImageViewController */ = {
+			isa = PBXGroup;
+			children = (
+				48774B452D26B78C000563CF /* SingleImageViewController.swift */,
+			);
+			path = SingleImageViewController;
+			sourceTree = "<group>";
+		};
+		48774B482D27211B000563CF /* ProfileViewController */ = {
+			isa = PBXGroup;
+			children = (
+				487048D92D22BD9200ECA14A /* ProfileViewController.swift */,
+			);
+			path = ProfileViewController;
+			sourceTree = "<group>";
+		};
 		48BF2B592D14B20D00117091 = {
 			isa = PBXGroup;
 			children = (
@@ -176,6 +193,8 @@
 				48BF2B672D14B20D00117091 /* SceneDelegate.swift */,
 				486515002D181B7B00BF6118 /* Helpers */,
 				4802D5312D17850B0060ADA0 /* ImagesList */,
+				48774B472D2720C9000563CF /* SingleImageViewController */,
+				48774B482D27211B000563CF /* ProfileViewController */,
 				486515032D181BC700BF6118 /* Presentation */,
 				48BF2B6E2D14B21100117091 /* Assets.xcassets */,
 				48BF2B702D14B21100117091 /* LaunchScreen.storyboard */,
@@ -284,6 +303,7 @@
 				48BF2B662D14B20D00117091 /* AppDelegate.swift in Sources */,
 				487048DA2D22BD9200ECA14A /* ProfileViewController.swift in Sources */,
 				48BF2B682D14B20D00117091 /* SceneDelegate.swift in Sources */,
+				48774B462D26B78C000563CF /* SingleImageViewController.swift in Sources */,
 				48C04FC02D18A15700C64422 /* Gradient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
