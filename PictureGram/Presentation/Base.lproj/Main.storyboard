@@ -191,7 +191,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SD7-do-uyP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="47" y="806"/>
+            <point key="canvasLocation" x="973" y="765"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="M0c-b3-nnM">
@@ -214,7 +214,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bmK-oy-ytv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-972" y="370"/>
+            <point key="canvasLocation" x="-146" y="363"/>
         </scene>
         <!--Single Image View Controller-->
         <scene sceneID="oEk-nF-aEO">
@@ -224,18 +224,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I0F-VD-dbk">
-                                <rect key="frame" x="-20" y="-20" width="433" height="892"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" maximumZoomScale="2" translatesAutoresizingMaskIntoConstraints="NO" id="t4Q-97-Eey">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="18.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="a4d-nc-EGw">
-                                        <rect key="frame" x="20" y="20" width="393" height="852"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="14.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="jjd-B1-evV">
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                 </subviews>
-                                <viewLayoutGuide key="contentLayoutGuide" id="orA-tq-kzH"/>
-                                <viewLayoutGuide key="frameLayoutGuide" id="KIH-3p-plU"/>
+                                <viewLayoutGuide key="contentLayoutGuide" id="Gev-ZA-cLi"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="daw-Fw-Fpl"/>
                                 <connections>
-                                    <outlet property="delegate" destination="YC8-z2-E4d" id="kka-hY-4xu"/>
+                                    <outlet property="delegate" destination="YC8-z2-E4d" id="MIS-6y-vDa"/>
                                 </connections>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TiW-H8-gUm">
@@ -254,27 +254,27 @@
                         <viewLayoutGuide key="safeArea" id="6Qm-yd-zPb"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
-                            <constraint firstItem="6Qm-yd-zPb" firstAttribute="top" secondItem="I0F-VD-dbk" secondAttribute="top" id="4EU-Oi-sKc"/>
+                            <constraint firstItem="t4Q-97-Eey" firstAttribute="leading" secondItem="6Qm-yd-zPb" secondAttribute="leading" id="5nP-ni-NMb"/>
+                            <constraint firstItem="t4Q-97-Eey" firstAttribute="top" secondItem="6Qm-yd-zPb" secondAttribute="top" id="CcT-Kb-ucO"/>
                             <constraint firstItem="TiW-H8-gUm" firstAttribute="top" secondItem="6Qm-yd-zPb" secondAttribute="top" constant="9" id="Lxk-Zm-8VM"/>
-                            <constraint firstItem="I0F-VD-dbk" firstAttribute="trailing" secondItem="6Qm-yd-zPb" secondAttribute="trailing" id="UcB-zw-jyM"/>
                             <constraint firstItem="TiW-H8-gUm" firstAttribute="leading" secondItem="6Qm-yd-zPb" secondAttribute="leading" constant="9" id="W10-xU-DOE"/>
-                            <constraint firstItem="I0F-VD-dbk" firstAttribute="bottom" secondItem="6Qm-yd-zPb" secondAttribute="bottom" id="aMK-eC-GSK"/>
-                            <constraint firstItem="6Qm-yd-zPb" firstAttribute="leading" secondItem="I0F-VD-dbk" secondAttribute="leading" id="uIc-fY-KPd"/>
+                            <constraint firstItem="6Qm-yd-zPb" firstAttribute="trailing" secondItem="t4Q-97-Eey" secondAttribute="trailing" id="q7d-Ut-sGt"/>
+                            <constraint firstItem="6Qm-yd-zPb" firstAttribute="bottom" secondItem="t4Q-97-Eey" secondAttribute="bottom" id="ruf-Sg-vBM"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="xQH-0X-v9C"/>
                     <connections>
-                        <outlet property="imageView" destination="a4d-nc-EGw" id="eW8-7C-5DC"/>
-                        <outlet property="scrollView" destination="I0F-VD-dbk" id="Gwh-Vt-uha"/>
+                        <outlet property="imageView" destination="jjd-B1-evV" id="Rwv-bd-SrR"/>
+                        <outlet property="scrollView" destination="t4Q-97-Eey" id="aLa-Wb-GWu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="11V-l2-nyS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1966" y="-2"/>
+            <point key="canvasLocation" x="1965.6488549618321" y="-2.1126760563380285"/>
         </scene>
     </scenes>
     <resources>
-        <image name="18.jpg" width="854" height="1280"/>
+        <image name="14.jpg" width="1280" height="853"/>
         <image name="Avatar" width="70" height="70"/>
         <image name="Image" width="1280" height="852"/>
         <image name="No Active.png" width="42" height="42"/>
