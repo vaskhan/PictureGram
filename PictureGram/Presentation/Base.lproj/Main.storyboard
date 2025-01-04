@@ -238,7 +238,7 @@
                                     <outlet property="delegate" destination="YC8-z2-E4d" id="MIS-6y-vDa"/>
                                 </connections>
                             </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TiW-H8-gUm">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TiW-H8-gUm" userLabel="ButtonBackward">
                                 <rect key="frame" x="9" y="9" width="48" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="2Jg-sb-Uef"/>
@@ -250,6 +250,18 @@
                                     <action selector="didTapBackButton:" destination="YC8-z2-E4d" eventType="touchUpInside" id="2vW-XK-1gN"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lDN-DY-TAP" userLabel="ButtonSharing">
+                                <rect key="frame" x="171" y="751" width="51" height="51"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="51" id="Df1-my-KYX"/>
+                                    <constraint firstAttribute="width" constant="51" id="ohO-eE-WdH"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="iconSharing"/>
+                                <connections>
+                                    <action selector="didTapShareButton:" destination="YC8-z2-E4d" eventType="touchUpInside" id="BcH-cL-YLh"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Qm-yd-zPb"/>
                         <color key="backgroundColor" name="YP Black"/>
@@ -257,7 +269,9 @@
                             <constraint firstItem="t4Q-97-Eey" firstAttribute="leading" secondItem="6Qm-yd-zPb" secondAttribute="leading" id="5nP-ni-NMb"/>
                             <constraint firstItem="t4Q-97-Eey" firstAttribute="top" secondItem="6Qm-yd-zPb" secondAttribute="top" id="CcT-Kb-ucO"/>
                             <constraint firstItem="TiW-H8-gUm" firstAttribute="top" secondItem="6Qm-yd-zPb" secondAttribute="top" constant="9" id="Lxk-Zm-8VM"/>
+                            <constraint firstItem="lDN-DY-TAP" firstAttribute="centerX" secondItem="6Qm-yd-zPb" secondAttribute="centerX" id="TwO-Ej-5tJ"/>
                             <constraint firstItem="TiW-H8-gUm" firstAttribute="leading" secondItem="6Qm-yd-zPb" secondAttribute="leading" constant="9" id="W10-xU-DOE"/>
+                            <constraint firstItem="6Qm-yd-zPb" firstAttribute="bottom" secondItem="lDN-DY-TAP" secondAttribute="bottom" constant="50" id="p2U-Ng-pw8"/>
                             <constraint firstItem="6Qm-yd-zPb" firstAttribute="trailing" secondItem="t4Q-97-Eey" secondAttribute="trailing" id="q7d-Ut-sGt"/>
                             <constraint firstItem="6Qm-yd-zPb" firstAttribute="bottom" secondItem="t4Q-97-Eey" secondAttribute="bottom" id="ruf-Sg-vBM"/>
                         </constraints>
@@ -280,6 +294,7 @@
         <image name="No Active.png" width="42" height="42"/>
         <image name="exitButtonImage" width="24" height="24"/>
         <image name="iconBackward" width="24" height="24"/>
+        <image name="iconSharing" width="51" height="51"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
         <namedColor name="YP Black">
