@@ -42,6 +42,9 @@
 		48BF2B6F2D14B21100117091 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48BF2B6E2D14B21100117091 /* Assets.xcassets */; };
 		48BF2B722D14B21100117091 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 48BF2B712D14B21100117091 /* Base */; };
 		48C04FC02D18A15700C64422 /* Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C04FBF2D18A15700C64422 /* Gradient.swift */; };
+		48D48EE12D3EE46C00649947 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D48EE02D3EE46C00649947 /* Constants.swift */; };
+		48D48EE42D404B5E00649947 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D48EE32D404B5E00649947 /* AuthViewController.swift */; };
+		48D48EE62D41805500649947 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D48EE52D41805500649947 /* WebViewViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +85,9 @@
 		48BF2B712D14B21100117091 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		48BF2B732D14B21100117091 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48C04FBF2D18A15700C64422 /* Gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gradient.swift; sourceTree = "<group>"; };
+		48D48EE02D3EE46C00649947 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		48D48EE32D404B5E00649947 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
+		48D48EE52D41805500649947 /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +153,7 @@
 			children = (
 				486515012D181B9700BF6118 /* Date + Extensions.swift */,
 				48C04FBF2D18A15700C64422 /* Gradient.swift */,
+				48D48EE02D3EE46C00649947 /* Constants.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -203,6 +210,7 @@
 		48BF2B642D14B20D00117091 /* PictureGram */ = {
 			isa = PBXGroup;
 			children = (
+				48D48EE22D404B3F00649947 /* Autorization */,
 				48BF2B652D14B20D00117091 /* AppDelegate.swift */,
 				48BF2B672D14B20D00117091 /* SceneDelegate.swift */,
 				486515002D181B7B00BF6118 /* Helpers */,
@@ -216,6 +224,15 @@
 				4802D52E2D177DE10060ADA0 /* Resources */,
 			);
 			path = PictureGram;
+			sourceTree = "<group>";
+		};
+		48D48EE22D404B3F00649947 /* Autorization */ = {
+			isa = PBXGroup;
+			children = (
+				48D48EE32D404B5E00649947 /* AuthViewController.swift */,
+				48D48EE52D41805500649947 /* WebViewViewController.swift */,
+			);
+			path = Autorization;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -315,12 +332,15 @@
 			files = (
 				48BF2B6A2D14B20D00117091 /* ImagesListViewController.swift in Sources */,
 				486515022D181B9700BF6118 /* Date + Extensions.swift in Sources */,
+				48D48EE42D404B5E00649947 /* AuthViewController.swift in Sources */,
 				4802D5302D1784D50060ADA0 /* ImagesListCell.swift in Sources */,
+				48D48EE62D41805500649947 /* WebViewViewController.swift in Sources */,
 				48BF2B662D14B20D00117091 /* AppDelegate.swift in Sources */,
 				487048DA2D22BD9200ECA14A /* ProfileViewController.swift in Sources */,
 				48BF2B682D14B20D00117091 /* SceneDelegate.swift in Sources */,
 				48774B462D26B78C000563CF /* SingleImageViewController.swift in Sources */,
 				48C04FC02D18A15700C64422 /* Gradient.swift in Sources */,
+				48D48EE12D3EE46C00649947 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
