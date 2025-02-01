@@ -10,6 +10,8 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
     private let webViewSegueIdentifier = "ShowWebView"
     private let oauth2Service = OAuth2Service.shared
     
+    weak var delegate: AuthViewControllerDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -20,7 +22,7 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
         if segue.identifier == webViewSegueIdentifier{
             guard let webViewController = segue.destination as? WebViewViewController
             else {
-                assertionFailure("Failed to prepare for \(webViewSegueIdentifier)")
+                assertionFailure("Ошибка подготовки \(webViewSegueIdentifier)")
                 return
             }
             webViewController.delegate = self
@@ -31,36 +33,23 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
     
     
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        oauth2Service.fetchAuthToken(code: code) { result in
+        oauth2Service.fetchAuthToken(code: code) { [weak self] result in
             switch result {
             case .success(let token):
                 print("Токен получен: \(token)")
                 
                 DispatchQueue.main.async {
-                    vc.dismiss(animated: true)
+                    vc.dismiss(animated: true) {
+                        self?.delegate?.didAuthenticate(self!)
+                    }
                 }
                 
             case .failure(let error):
                 print("Ошибка авторизации: \(error.localizedDescription)")
-//                self.showAuthErrorAlert()
+                self?.showAuthErrorAlert()
             }
         }
     }
-//    private func showImagesList() {
-//        let imagesListVC = ImagesListViewController()
-//        imagesListVC.modalPresentationStyle = .fullScreen
-//        self.present(imagesListVC, animated: true, completion: nil)
-//    }
-//    
-//    private func showAuthErrorAlert() {
-//            let alert = UIAlertController(
-//                title: "Ошибка авторизации",
-//                message: "Не удалось войти. Попробуйте ещё раз.",
-//                preferredStyle: .alert
-//            )
-//            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-//            present(alert, animated: true, completion: nil)
-//    }
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         print("Аутентификация отменена пользователем")
@@ -68,10 +57,20 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
     }
     
     private func configureBackButton() {
-        navigationController?.navigationBar.backIndicatorImage = UIImage(named: "nav_back_button") // 1
-        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "nav_back_button") // 2
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil) // 3
-        navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP Black") // 4
+        navigationController?.navigationBar.backIndicatorImage = UIImage(named: "nav_back_button")
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "nav_back_button")
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP Black")
+    }
+    
+    private func showAuthErrorAlert() {
+        let alert = UIAlertController(
+            title: "Ошибка авторизации",
+            message: "Не удалось войти. Попробуйте ещё раз.",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
 }
 

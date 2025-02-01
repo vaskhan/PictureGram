@@ -15,7 +15,10 @@ final class OAuth2Service {
     private init() {}
     
     func makeOAuthTokenRequest(code: String) -> URLRequest? {
-        guard let url = URL(string: baseURL) else { return nil }
+        guard let url = URL(string: baseURL) else {
+            print("Ошибка: не удалось создать URL \(baseURL)")
+            return nil
+        }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -29,8 +32,12 @@ final class OAuth2Service {
             URLQueryItem(name: "code", value: code),
             URLQueryItem(name: "grant_type", value: "authorization_code")
         ]
+        guard let httpBody = urlComponents.query?.data(using: .utf8) else {
+            print("Ошибка: не удалось создать тело запроса из URLComponents")
+            return nil
+        }
         
-        request.httpBody = urlComponents.query?.data(using: .utf8)
+        request.httpBody = httpBody
         return request
     }
     
@@ -71,7 +78,7 @@ final class OAuth2Service {
                 return
             }
             print("Данные от сервера:", String(data: data, encoding: .utf8) ?? "Не удалось преобразовать данные")
-
+            
             do {
                 let decoder = JSONDecoder()
                 let responseBody = try decoder.decode(OAuthTokenResponseBody.self, from: data)

@@ -38,6 +38,8 @@
 		48B24EAB2D4C1B2F00B7C313 /* OAuth2Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B24EAA2D4C1B2F00B7C313 /* OAuth2Service.swift */; };
 		48B24EB02D4D67DB00B7C313 /* OAuthTokenResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B24EAF2D4D67DB00B7C313 /* OAuthTokenResponseBody.swift */; };
 		48B24EB22D4D6BD700B7C313 /* OAuth2TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B24EB12D4D6BD700B7C313 /* OAuth2TokenStorage.swift */; };
+		48B24EB42D4EC3E100B7C313 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B24EB32D4EC3E100B7C313 /* SplashViewController.swift */; };
+		48B24EB72D4ED7FA00B7C313 /* AuthViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B24EB62D4ED7FA00B7C313 /* AuthViewControllerDelegate.swift */; };
 		48BF2B662D14B20D00117091 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BF2B652D14B20D00117091 /* AppDelegate.swift */; };
 		48BF2B682D14B20D00117091 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BF2B672D14B20D00117091 /* SceneDelegate.swift */; };
 		48BF2B6A2D14B20D00117091 /* ImagesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BF2B692D14B20D00117091 /* ImagesListViewController.swift */; };
@@ -83,6 +85,8 @@
 		48B24EAA2D4C1B2F00B7C313 /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
 		48B24EAF2D4D67DB00B7C313 /* OAuthTokenResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenResponseBody.swift; sourceTree = "<group>"; };
 		48B24EB12D4D6BD700B7C313 /* OAuth2TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2TokenStorage.swift; sourceTree = "<group>"; };
+		48B24EB32D4EC3E100B7C313 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		48B24EB62D4ED7FA00B7C313 /* AuthViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewControllerDelegate.swift; sourceTree = "<group>"; };
 		48BF2B622D14B20D00117091 /* PictureGram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PictureGram.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48BF2B652D14B20D00117091 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		48BF2B672D14B20D00117091 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -170,6 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				48BF2B6B2D14B20D00117091 /* Main.storyboard */,
+				48BF2B702D14B21100117091 /* LaunchScreen.storyboard */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -221,6 +226,7 @@
 			isa = PBXGroup;
 			children = (
 				48D48EE72D42D54400649947 /* WebViewViewControllerDelegate.swift */,
+				48B24EB62D4ED7FA00B7C313 /* AuthViewControllerDelegate.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -231,6 +237,14 @@
 				48B24EAF2D4D67DB00B7C313 /* OAuthTokenResponseBody.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		48B24EB52D4ED3A400B7C313 /* SplashViewController */ = {
+			isa = PBXGroup;
+			children = (
+				48B24EB32D4EC3E100B7C313 /* SplashViewController.swift */,
+			);
+			path = SplashViewController;
 			sourceTree = "<group>";
 		};
 		48BF2B592D14B20D00117091 = {
@@ -252,6 +266,7 @@
 		48BF2B642D14B20D00117091 /* PictureGram */ = {
 			isa = PBXGroup;
 			children = (
+				48B24EB52D4ED3A400B7C313 /* SplashViewController */,
 				48B24EAE2D4D67C000B7C313 /* Models */,
 				48B24EAC2D4D66ED00B7C313 /* App */,
 				48B24EAD2D4D672800B7C313 /* Protocols */,
@@ -264,7 +279,6 @@
 				4802D52E2D177DE10060ADA0 /* Resources */,
 				486515032D181BC700BF6118 /* Presentation */,
 				48BF2B6E2D14B21100117091 /* Assets.xcassets */,
-				48BF2B702D14B21100117091 /* LaunchScreen.storyboard */,
 				48BF2B732D14B21100117091 /* Info.plist */,
 			);
 			path = PictureGram;
@@ -381,6 +395,7 @@
 				4802D5302D1784D50060ADA0 /* ImagesListCell.swift in Sources */,
 				48D48EE62D41805500649947 /* WebViewViewController.swift in Sources */,
 				48BF2B662D14B20D00117091 /* AppDelegate.swift in Sources */,
+				48B24EB72D4ED7FA00B7C313 /* AuthViewControllerDelegate.swift in Sources */,
 				487048DA2D22BD9200ECA14A /* ProfileViewController.swift in Sources */,
 				48BF2B682D14B20D00117091 /* SceneDelegate.swift in Sources */,
 				48774B462D26B78C000563CF /* SingleImageViewController.swift in Sources */,
@@ -389,6 +404,7 @@
 				48B24EB22D4D6BD700B7C313 /* OAuth2TokenStorage.swift in Sources */,
 				48C04FC02D18A15700C64422 /* Gradient.swift in Sources */,
 				48D48EE12D3EE46C00649947 /* Constants.swift in Sources */,
+				48B24EB42D4EC3E100B7C313 /* SplashViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
