@@ -31,9 +31,36 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
     
     
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-//        print("Получен код аутентификации: \(code)")
-//        vc.dismiss(animated: true, completion: nil)
+        oauth2Service.fetchAuthToken(code: code) { result in
+            switch result {
+            case .success(let token):
+                print("Токен получен: \(token)")
+                
+                DispatchQueue.main.async {
+                    vc.dismiss(animated: true)
+                }
+                
+            case .failure(let error):
+                print("Ошибка авторизации: \(error.localizedDescription)")
+//                self.showAuthErrorAlert()
+            }
+        }
     }
+//    private func showImagesList() {
+//        let imagesListVC = ImagesListViewController()
+//        imagesListVC.modalPresentationStyle = .fullScreen
+//        self.present(imagesListVC, animated: true, completion: nil)
+//    }
+//    
+//    private func showAuthErrorAlert() {
+//            let alert = UIAlertController(
+//                title: "Ошибка авторизации",
+//                message: "Не удалось войти. Попробуйте ещё раз.",
+//                preferredStyle: .alert
+//            )
+//            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+//            present(alert, animated: true, completion: nil)
+//    }
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         print("Аутентификация отменена пользователем")
