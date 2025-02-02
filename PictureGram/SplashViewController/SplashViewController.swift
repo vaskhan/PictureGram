@@ -12,29 +12,29 @@ final class SplashViewController: UIViewController {
     private let showAuthScreenSegueIdentifier = "ShowAuthScreen"
     
     override func viewDidAppear(_ animated: Bool) {
-            super.viewDidAppear(animated)
-            checkAuth()
-        }
+        super.viewDidAppear(animated)
+        checkAuth()
+    }
     
     private func checkAuth() {
-            if storage.token != nil {
-                switchTabBarController()
-            } else {
-                performSegue(withIdentifier: showAuthScreenSegueIdentifier, sender: nil)
-            }
+        if storage.token != nil {
+            switchTabBarController()
+        } else {
+            performSegue(withIdentifier: showAuthScreenSegueIdentifier, sender: nil)
         }
+    }
     
     private func switchTabBarController() {
-            guard let window = UIApplication.shared.windows.first else {
-                assertionFailure("Ошибка конфигурации")
-                return
-            }
-
-            let tabBarController = UIStoryboard(name: "Main", bundle: .main)
-                .instantiateViewController(withIdentifier: "TabBarViewController")
-            
-            window.rootViewController = tabBarController
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Ошибка конфигурации")
+            return
         }
+        
+        let tabBarController = UIStoryboard(name: "Main", bundle: .main)
+            .instantiateViewController(withIdentifier: "TabBarViewController")
+        
+        window.rootViewController = tabBarController
+    }
 }
 
 extension SplashViewController {

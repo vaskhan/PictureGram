@@ -7,10 +7,10 @@
 import UIKit
 
 final class AuthViewController: UIViewController, WebViewViewControllerDelegate {
+    weak var delegate: AuthViewControllerDelegate?
+    
     private let webViewSegueIdentifier = "ShowWebView"
     private let oauth2Service = OAuth2Service.shared
-    
-    weak var delegate: AuthViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,18 +19,13 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == webViewSegueIdentifier{
-            guard let webViewController = segue.destination as? WebViewViewController
-            else {
-                assertionFailure("Ошибка подготовки \(webViewSegueIdentifier)")
-                return
-            }
-            webViewController.delegate = self
-        } else {
+        guard segue.identifier == webViewSegueIdentifier,
+              let webViewViewController = segue.destination as? WebViewViewController else {
             super.prepare(for: segue, sender: sender)
+            return
         }
+        webViewViewController.delegate = self
     }
-    
     
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         oauth2Service.fetchAuthToken(code: code) { [weak self] result in
