@@ -11,6 +11,10 @@ final class OAuth2Service {
     static let shared = OAuth2Service()
     private let baseURL = "https://unsplash.com/oauth/token"
     private let storage = OAuth2TokenStorage()
+    private let urlSession = URLSession.shared
+    private let queue = DispatchQueue(label: "OAuth2Service.queue")
+    private var task: URLSessionTask?
+    private var lastCode: String?
     
     private init() {}
     
@@ -42,60 +46,82 @@ final class OAuth2Service {
     }
     
     func fetchAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
-        guard let request = makeOAuthTokenRequest(code: code) else {
-            completion(.failure(NSError(domain: "OAuth2Service", code: 1, userInfo: [NSLocalizedDescriptionKey: "Ошибка создания запроса"])))
-            return
-        }
+        assert(Thread.isMainThread)
         
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
+        queue.async { [weak self] in
+            guard let self = self else { return }
+            
+            guard lastCode != code else {
                 DispatchQueue.main.async {
-                    completion(.failure(NSError(domain: "OAuth2Service", code: 2, userInfo: [NSLocalizedDescriptionKey: "Ошибка сети: \(error.localizedDescription)"])))
+                    completion(.failure(NSError(domain: "OAuth2Service", code: 0, userInfo: [NSLocalizedDescriptionKey: "Недействительный запрос"])))
+                }
+                return
+            }
+            self.task?.cancel()
+            self.lastCode = code
+            
+            guard let request = makeOAuthTokenRequest(code: code) else {
+                DispatchQueue.main.async {
+                    completion(.failure(NSError(domain: "OAuth2Service", code: 1, userInfo: [NSLocalizedDescriptionKey: "Ошибка создания запроса"])))
                 }
                 return
             }
             
-            guard let httpResponse = response as? HTTPURLResponse else {
-                DispatchQueue.main.async {
-                    completion(.failure(NSError(domain: "OAuth2Service", code: 3, userInfo: [NSLocalizedDescriptionKey: "Некорректный ответ HTTP"])))
+            let task = self.urlSession.dataTask(with: request) { [weak self] data, response, error in
+                guard let self = self else { return }
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(.failure(NSError(domain: "OAuth2Service", code: 2, userInfo: [NSLocalizedDescriptionKey: "Ошибка сети: \(error.localizedDescription)"])))
+                    }
+                    return
                 }
-                return
-            }
-            
-            print("HTTP - код: \(httpResponse.statusCode)")
-            
-            guard (200..<300) .contains(httpResponse.statusCode) else {
-                DispatchQueue.main.async {
-                    completion(.failure(NSError(domain: "OAuth2Service", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Ошибка HTTP: \(httpResponse.statusCode)"])))
-                }
-                return
-            }
-            
-            guard let data = data else {
-                DispatchQueue.main.async {
-                    completion(.failure(NSError(domain: "OAuth2Service", code: 4, userInfo: [NSLocalizedDescriptionKey: "Ответ пустой"])))
-                }
-                return
-            }
-            print("Данные от сервера:", String(data: data, encoding: .utf8) ?? "Не удалось преобразовать данные")
-            
-            do {
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                let responseBody = try decoder.decode(OAuthTokenResponseBody.self, from: data)
                 
-                self.storage.token = responseBody.accessToken
-                
-                DispatchQueue.main.async {
-                    completion(.success(responseBody.accessToken))
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    DispatchQueue.main.async {
+                        completion(.failure(NSError(domain: "OAuth2Service", code: 3, userInfo: [NSLocalizedDescriptionKey: "Некорректный ответ HTTP"])))
+                    }
+                    return
                 }
-            } catch {
-                DispatchQueue.main.async {
-                    completion(.failure(NSError(domain: "OAuth2Service", code: 5, userInfo: [NSLocalizedDescriptionKey: "Ошибка декодирования JSON"])))
+                
+                print("HTTP - код: \(httpResponse.statusCode)")
+                
+                guard (200..<300) .contains(httpResponse.statusCode) else {
+                    DispatchQueue.main.async {
+                        completion(.failure(NSError(domain: "OAuth2Service", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Ошибка HTTP: \(httpResponse.statusCode)"])))
+                    }
+                    return
+                }
+                
+                guard let data = data else {
+                    DispatchQueue.main.async {
+                        completion(.failure(NSError(domain: "OAuth2Service", code: 4, userInfo: [NSLocalizedDescriptionKey: "Ответ пустой"])))
+                    }
+                    return
+                }
+                print("Данные от сервера:", String(data: data, encoding: .utf8) ?? "Не удалось преобразовать данные")
+                
+                do {
+                    let decoder = JSONDecoder()
+                    decoder.keyDecodingStrategy = .convertFromSnakeCase
+                    let responseBody = try decoder.decode(OAuthTokenResponseBody.self, from: data)
+                    
+                    DispatchQueue.main.async {
+                        self.storage.token = responseBody.accessToken
+                        completion(.success(responseBody.accessToken))
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        completion(.failure(NSError(domain: "OAuth2Service", code: 5, userInfo: [NSLocalizedDescriptionKey: "Ошибка декодирования JSON"])))
+                    }
+                }
+                self.queue.async {
+                    self.task = nil
+                    self.lastCode = nil
                 }
             }
+            
+            self.task = task
+            task.resume()
         }
-        
-        task.resume()
     }
 }
