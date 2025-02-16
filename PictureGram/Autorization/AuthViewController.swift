@@ -19,14 +19,25 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
         configureBackButton()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        view.endEditing(true)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("🔄 Выполняется `prepare(for segue:)` в AuthViewController с идентификатором: \(segue.identifier ?? "nil")")
+        
         guard segue.identifier == webViewSegueIdentifier,
               let webViewViewController = segue.destination as? WebViewViewController else {
+            print("❌ Ошибка: переход на WebViewViewController не произошел")
             super.prepare(for: segue, sender: sender)
             return
         }
+        
         webViewViewController.delegate = self
+        print("✅ Делегат WebViewViewController установлен")
     }
+
     
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         UIBlockingProgressHUD.show()
@@ -39,7 +50,13 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
                 switch result {
                 case .success(let token):
                     print("Токен получен: \(token)")
-                    vc.dismiss(animated: true) {
+                    vc.dismiss(animated: true) { [weak self] in
+                        guard let self = self else {
+                            print("❌ AuthViewController уже уничтожен перед вызовом delegate")
+                            return
+                        }
+                        
+                        print("🔍 Delegate в AuthViewController: \(self.delegate == nil ? "nil" : "установлен")")
                         self.delegate?.didAuthenticate(self)
                     }
                     

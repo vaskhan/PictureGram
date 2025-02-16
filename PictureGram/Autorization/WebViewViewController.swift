@@ -51,6 +51,7 @@ final class WebViewViewController: UIViewController {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
     }
+    
 
     private func updateProgress() {
         progressView.setProgress(Float(webView.estimatedProgress), animated: true)

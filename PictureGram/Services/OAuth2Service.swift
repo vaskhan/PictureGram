@@ -46,6 +46,7 @@ final class OAuth2Service {
     }
     
     func fetchAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
+        
         assert(Thread.isMainThread)
         
         queue.async { [weak self] in
@@ -69,35 +70,34 @@ final class OAuth2Service {
             
             let task = self.urlSession.dataTask(with: request) { [weak self] data, response, error in
                 guard let self = self else { return }
+                print("🔍 HTTP-ответ:", response ?? "nil")
+
                 if let error = error {
+                    print("❌ Ошибка сети:", error.localizedDescription)
                     DispatchQueue.main.async {
                         completion(.failure(NSError(domain: "OAuth2Service", code: 2, userInfo: [NSLocalizedDescriptionKey: "Ошибка сети: \(error.localizedDescription)"])))
                     }
                     return
                 }
-                
+
                 guard let httpResponse = response as? HTTPURLResponse else {
+                    print("❌ Некорректный ответ сервера:", response ?? "nil")
                     DispatchQueue.main.async {
                         completion(.failure(NSError(domain: "OAuth2Service", code: 3, userInfo: [NSLocalizedDescriptionKey: "Некорректный ответ HTTP"])))
                     }
                     return
                 }
-                
-                print("HTTP - код: \(httpResponse.statusCode)")
-                
-                guard (200..<300) .contains(httpResponse.statusCode) else {
-                    DispatchQueue.main.async {
-                        completion(.failure(NSError(domain: "OAuth2Service", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Ошибка HTTP: \(httpResponse.statusCode)"])))
-                    }
-                    return
-                }
-                
+
+                print("📡 HTTP - код ответа:", httpResponse.statusCode)
+
                 guard let data = data else {
+                    print("❌ Ошибка: данные от сервера пустые!")
                     DispatchQueue.main.async {
                         completion(.failure(NSError(domain: "OAuth2Service", code: 4, userInfo: [NSLocalizedDescriptionKey: "Ответ пустой"])))
                     }
                     return
                 }
+
                 print("Данные от сервера:", String(data: data, encoding: .utf8) ?? "Не удалось преобразовать данные")
                 
                 do {

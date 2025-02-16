@@ -45,11 +45,44 @@ final class ProfileViewController: UIViewController {
         return button
     }()
     
+    private var profile: Profile?
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupViews()
         setupConstraints()
+        updateUI()
+        profileImageServiceObserver = NotificationCenter.default    
+                    .addObserver(
+                        forName: ProfileImageService.didChangeNotification,
+                        object: nil,
+                        queue: .main
+                    ) { [weak self] _ in
+                        guard let self = self else { return }
+                        self.updateAvatar()
+                    }
+                updateAvatar()
+    }
+    
+    private func updateAvatar() {
+            guard
+                let imageURL = ProfileImageService.shared.avatarURL,
+                let url = URL(string: imageURL)
+            else { return }
+            // TODO [Sprint 11] Обновить аватар, используя Kingfisher
+        }
+    
+    private func updateUI() {
+        if let profile = ProfileService.shared.profile {
+            print("🟢 Отображаем профиль из памяти: \(profile.name)")
+            nameLabel.text = profile.name
+            loginLabel.text = profile.loginName
+            descriptionLabel.text = profile.bio ?? "Нет описания"
+        } else {
+            print("🔴 Профиль отсутствует в памяти")
+        }
     }
     
     private func setupViews() {

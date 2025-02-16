@@ -11,9 +11,12 @@ final class OAuth2TokenStorage {
     
     var token: String? {
         get {
-            return UserDefaults.standard.string(forKey: "AuthToken")
+            let token = UserDefaults.standard.string(forKey: "AuthToken")
+            print("🛠 Читаем токен из UserDefaults: \(token ?? "nil")")
+            return token
         }
         set {
+            print("💾 Сохраняем токен в UserDefaults: \(newValue ?? "nil")")
             UserDefaults.standard.setValue(newValue, forKey: "AuthToken")
         }
     }
