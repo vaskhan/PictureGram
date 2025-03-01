@@ -5,6 +5,7 @@
 //  Created by Василий Ханин on 22.01.2025.
 //
 import UIKit
+import ProgressHUD
 
 final class AuthViewController: UIViewController, WebViewViewControllerDelegate {
     weak var delegate: AuthViewControllerDelegate?
@@ -18,30 +19,51 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
         configureBackButton()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        view.endEditing(true)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("🔄 Выполняется `prepare(for segue:)` в AuthViewController с идентификатором: \(segue.identifier ?? "nil")")
+        
         guard segue.identifier == webViewSegueIdentifier,
               let webViewViewController = segue.destination as? WebViewViewController else {
+            print("❌ Ошибка: переход на WebViewViewController не произошел")
             super.prepare(for: segue, sender: sender)
             return
         }
+        
         webViewViewController.delegate = self
+        print("✅ Делегат WebViewViewController установлен")
     }
+
     
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
+        UIBlockingProgressHUD.show()
         oauth2Service.fetchAuthToken(code: code) { [weak self] result in
-            switch result {
-            case .success(let token):
-                print("Токен получен: \(token)")
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                UIBlockingProgressHUD.dismiss()
                 
-                DispatchQueue.main.async {
-                    vc.dismiss(animated: true) {
-                        self?.delegate?.didAuthenticate(self!)
+                switch result {
+                case .success(let token):
+                    print("Токен получен: \(token)")
+                    vc.dismiss(animated: true) { [weak self] in
+                        guard let self = self else {
+                            print("❌ AuthViewController уже уничтожен перед вызовом delegate")
+                            return
+                        }
+                        
+                        print("🔍 Delegate в AuthViewController: \(self.delegate == nil ? "nil" : "установлен")")
+                        self.delegate?.didAuthenticate(self)
                     }
+                    
+                case .failure(let error):
+                    print("Ошибка авторизации: \(error.localizedDescription)")
+                    self.showAuthErrorAlert()
                 }
-                
-            case .failure(let error):
-                print("Ошибка авторизации: \(error.localizedDescription)")
-                self?.showAuthErrorAlert()
             }
         }
     }

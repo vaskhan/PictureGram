@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
@@ -45,11 +46,63 @@ final class ProfileViewController: UIViewController {
         return button
     }()
     
+    private var profile: Profile?
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupViews()
         setupConstraints()
+        updateUI()
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { notification in
+                print("📬 [ProfileViewController]: Получено уведомление от ProfileImageService")
+                if let url = notification.userInfo?["URL"] as? String {
+                    print("📬 [ProfileViewController]: URL из userInfo: \(url)")
+                }
+                self.updateAvatar()
+            }
+
+        updateAvatar()
+    }
+    
+    private func updateAvatar() {
+        guard let avatarURL = ProfileImageService.shared.avatarURL,
+              let url = URL(string: avatarURL) else {
+            print("❌ [updateAvatar]: avatarURL отсутствует или некорректен")
+            return
+        }
+        
+        print("🟢 [updateAvatar]: Загружаем аватар по URL: \(url)")
+        
+        profileImageView.kf.setImage(
+            with: url,
+            placeholder: UIImage(named: "Avatar"),
+            options: [.transition(.fade(0.3))]
+        ) { result in
+            switch result {
+            case .success:
+                print("✅ [updateAvatar]: Аватар успешно установлен")
+            case .failure(let error):
+                print("❌ [updateAvatar]: Ошибка загрузки аватара: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func updateUI() {
+        if let profile = ProfileService.shared.profile {
+            print("🟢 Отображаем профиль из памяти: \(profile.name)")
+            nameLabel.text = profile.name
+            loginLabel.text = profile.loginName
+            descriptionLabel.text = profile.bio ?? "Нет описания"
+        } else {
+            print("🔴 Профиль отсутствует в памяти")
+        }
     }
     
     private func setupViews() {
