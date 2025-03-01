@@ -13,10 +13,33 @@ final class SplashViewController: UIViewController {
     private let showAuthScreenSegueIdentifier = "ShowAuthScreen"
     private let profileService = ProfileService.shared
     
+    private let logoImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "Vector")
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupConfigUI()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("🚀 SplashViewController появился на экране")
         checkAuth()
+    }
+    
+    private func setupConfigUI() {
+        view.backgroundColor = .ypBlack
+        view.addSubview(logoImageView)
+        
+        NSLayoutConstraint.activate([
+            logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        ])
     }
     
     private func checkAuth() {
@@ -25,7 +48,11 @@ final class SplashViewController: UIViewController {
         if storage.token != nil {
             switchTabBarController()
         } else {
-            performSegue(withIdentifier: showAuthScreenSegueIdentifier, sender: nil)
+            DispatchQueue.main.async {
+                let authViewController = AuthViewController()
+                authViewController.modalPresentationStyle = .fullScreen
+                self.present(authViewController, animated: true, completion: nil)
+            }
         }
     }
     
@@ -37,7 +64,7 @@ final class SplashViewController: UIViewController {
                 switch result {
                 case .success(let profile):
                     print("✅ Профиль загружен: \(profile.name)")
-                
+                    
                     ProfileImageService.shared.fetchProfileImageURL(username: profile.username) { result in
                         if case .success(let imageURL) = result {
                             KingfisherManager.shared.retrieveImage(with: URL(string: imageURL)!) { _ in
@@ -59,21 +86,6 @@ final class SplashViewController: UIViewController {
                     
                 }
             }
-        }
-    }
-}
-extension SplashViewController {
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showAuthScreenSegueIdentifier {
-            guard let navigationController = segue.destination as? UINavigationController,
-                  let authViewController = navigationController.viewControllers.first as? AuthViewController else {
-                assertionFailure("Не удалось перейти на экран авторизации")
-                return
-            }
-            authViewController.delegate = self
-            print("✅ Делегат установлен для AuthViewController")
-        } else {
-            super.prepare(for: segue, sender: sender)
         }
     }
 }
