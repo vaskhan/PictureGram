@@ -12,9 +12,12 @@ final class OAuth2Service {
     static let shared = OAuth2Service()
     private let storage = OAuth2TokenStorage()
     private let urlSession = URLSession.shared
-    
+
+    private var currentTask: URLSessionTask?
+    private var lastCode: String?
+
     private init() {}
-    
+
     func makeOAuthTokenRequest(code: String) -> URLRequest? {
         guard let url = URL(string: baseURL) else {
             print("Ошибка: не удалось создать URL \(baseURL)")
@@ -33,6 +36,7 @@ final class OAuth2Service {
             URLQueryItem(name: "code", value: code),
             URLQueryItem(name: "grant_type", value: "authorization_code")
         ]
+        
         guard let httpBody = urlComponents.query?.data(using: .utf8) else {
             print("Ошибка: не удалось создать тело запроса из URLComponents")
             return nil
@@ -46,12 +50,25 @@ final class OAuth2Service {
         code: String,
         completion: @escaping (Result<String, Error>) -> Void
     ) {
+        if lastCode == code {
+            print("Повторный запрос с тем же кодом \(code), отменяем отправку.")
+            return
+        }
+
+        currentTask?.cancel()
+        lastCode = code
+
         guard let request = makeOAuthTokenRequest(code: code) else {
             completion(.failure(NetworkError.urlSessionError))
             return
         }
         
-        let task = urlSession.objectTask(for: request) { (result: Result<OAuthTokenResponseBody, Error>) in
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+            guard let self = self else { return }
+
+            self.lastCode = nil
+            self.currentTask = nil
+            
             switch result {
             case .success(let responseBody):
                 self.storage.token = responseBody.accessToken
@@ -62,6 +79,8 @@ final class OAuth2Service {
                 completion(.failure(error))
             }
         }
+        
+        currentTask = task
         task.resume()
     }
 }

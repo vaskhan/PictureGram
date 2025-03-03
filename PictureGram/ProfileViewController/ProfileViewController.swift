@@ -28,7 +28,7 @@ final class ProfileViewController: UIViewController {
         let label = UILabel()
         label.text = "@ekaterina_nov"
         label.font = UIFont(name: "SFPro-Regular", size: 13)
-        label.textColor = .lightGray
+        label.textColor = .ypLightGray
         return label
     }()
     
@@ -52,6 +52,7 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .ypBlack
         setupViews()
         setupConstraints()
         updateUI()
@@ -60,7 +61,9 @@ final class ProfileViewController: UIViewController {
                 forName: ProfileImageService.didChangeNotification,
                 object: nil,
                 queue: .main
-            ) { notification in
+            ) { [weak self] notification in
+                guard let self = self else { return }
+                
                 print("📬 [ProfileViewController]: Получено уведомление от ProfileImageService")
                 if let url = notification.userInfo?["URL"] as? String {
                     print("📬 [ProfileViewController]: URL из userInfo: \(url)")
@@ -78,7 +81,7 @@ final class ProfileViewController: UIViewController {
             return
         }
         
-        print("🟢 [updateAvatar]: Загружаем аватар по URL: \(url)")
+        print("✅ [updateAvatar]: Загружаем аватар по URL: \(url)")
         
         profileImageView.kf.setImage(
             with: url,
@@ -96,12 +99,12 @@ final class ProfileViewController: UIViewController {
     
     private func updateUI() {
         if let profile = ProfileService.shared.profile {
-            print("🟢 Отображаем профиль из памяти: \(profile.name)")
+            print("✅ Отображаем профиль из памяти: \(profile.name)")
             nameLabel.text = profile.name
             loginLabel.text = profile.loginName
             descriptionLabel.text = profile.bio ?? "Нет описания"
         } else {
-            print("🔴 Профиль отсутствует в памяти")
+            print("❌ Профиль отсутствует в памяти")
         }
     }
     
@@ -110,6 +113,9 @@ final class ProfileViewController: UIViewController {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
+        
+        profileImageView.layer.cornerRadius = profileImageView.frame.height / 2
+        profileImageView.clipsToBounds = true
     }
     
     private func setupConstraints() {

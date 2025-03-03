@@ -13,7 +13,7 @@ final class ProfileImageService {
     private let baseURL = "https://api.unsplash.com/users"
     private let authToken = OAuth2TokenStorage().token
     
-    private (set) var avatarURL: String?
+    private(set) var avatarURL: String?
     
     private init() {}
     
@@ -27,7 +27,8 @@ final class ProfileImageService {
                 return
             }
 
-            let task = URLSession.shared.objectTask(for: request) { (result: Result<UserResult, Error>) in
+            let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<UserResult, Error>) in
+                guard let self = self else { return }
                 switch result {
                 case .success(let userResult):
                     let imageURL = userResult.profileImage.small
@@ -40,7 +41,6 @@ final class ProfileImageService {
                         name: ProfileImageService.didChangeNotification,
                         object: self,
                         userInfo: ["URL": imageURL]
-                        
                     )
                     print("📣 [ProfileImageService]: Уведомление отправлено с URL: \(imageURL)")
                     completion(.success(imageURL))

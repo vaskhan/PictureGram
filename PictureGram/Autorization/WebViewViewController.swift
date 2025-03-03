@@ -5,7 +5,7 @@
 //  Created by Василий Ханин on 22.01.2025.
 //
 import UIKit
-import WebKit
+@preconcurrency import WebKit
 
 enum WebViewConstants {
     static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
@@ -21,6 +21,8 @@ final class WebViewViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        progressView.progress = 0
+
         webView.navigationDelegate = self
         loadAuthView()
         

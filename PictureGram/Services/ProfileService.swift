@@ -8,13 +8,19 @@
 import Foundation
 
 final class ProfileService {
+    
+    // MARK: - Public Properties
+    static let shared = ProfileService()
+    private(set) var profile: Profile?
+    
+    // MARK: - Private Properties
     private let baseURL = "https://api.unsplash.com/me"
     private let authToken = OAuth2TokenStorage()
     
-    static let shared = ProfileService()
+    // MARK: - Initializers
     private init() {}
-    private(set) var profile: Profile?
     
+    // MARK: - Public Methods
     func fetchProfile(completion: @escaping (Result<Profile, Error>) -> Void) {
         guard let token = authToken.token,
               let request = makeProfileRequest(token: token) else {
@@ -22,7 +28,9 @@ final class ProfileService {
             return
         }
         
-        let task = URLSession.shared.objectTask(for: request) { (result: Result<ProfileResult, Error>) in
+        let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
+            guard let self = self else { return }
+            
             switch result {
             case .success(let profileResult):
                 let profile = Profile(
@@ -39,9 +47,11 @@ final class ProfileService {
                 completion(.failure(error))
             }
         }
+        
         task.resume()
     }
     
+    // MARK: - Private Methods
     private func makeProfileRequest(token: String) -> URLRequest? {
         guard let url = URL(string: baseURL) else { return nil }
         
@@ -52,6 +62,7 @@ final class ProfileService {
     }
 }
 
+// MARK: - ProfileResult
 struct ProfileResult: Codable {
     let username: String
     let firstName: String
@@ -59,6 +70,7 @@ struct ProfileResult: Codable {
     let bio: String?
 }
 
+// MARK: - Profile
 struct Profile {
     let username: String
     let name: String

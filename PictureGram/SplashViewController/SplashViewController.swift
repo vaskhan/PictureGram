@@ -45,48 +45,32 @@ final class SplashViewController: UIViewController {
     private func checkAuth() {
         print("🔑 Проверяем авторизацию...")
         print("📦 Текущий токен: \(storage.token ?? "nil")")
+        
         if storage.token != nil {
-            switchTabBarController()
+            fetchProfileData()
         } else {
-            DispatchQueue.main.async {
-                let authViewController = AuthViewController()
-                authViewController.modalPresentationStyle = .fullScreen
-                self.present(authViewController, animated: true, completion: nil)
+            guard let authViewController = UIStoryboard(name: "Main", bundle: nil)
+                    .instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else {
+                return
             }
+            
+            authViewController.delegate = self
+            authViewController.modalPresentationStyle = .fullScreen
+            present(authViewController, animated: true)
         }
     }
+
     
     private func switchTabBarController() {
-        print("🚀 Загружаем профиль перед переходом на TabBarController...")
-        
-        ProfileService.shared.fetchProfile { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let profile):
-                    print("✅ Профиль загружен: \(profile.name)")
-                    
-                    ProfileImageService.shared.fetchProfileImageURL(username: profile.username) { result in
-                        if case .success(let imageURL) = result {
-                            KingfisherManager.shared.retrieveImage(with: URL(string: imageURL)!) { _ in
-                                print("✅ [Splash]: Аватар предзагружен")
-                            }
-                        }
-                        guard let window = UIApplication.shared.windows.first else {
-                            assertionFailure("Ошибка конфигурации")
-                            return
-                        }
-                        
-                        let tabBarController = UIStoryboard(name: "Main", bundle: .main)
-                            .instantiateViewController(withIdentifier: "TabBarViewController")
-                        
-                        window.rootViewController = tabBarController
-                    }
-                case .failure(let error):
-                    print("❌ Ошибка загрузки профиля: \(error.localizedDescription)")
-                    
-                }
-            }
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Ошибка конфигурации")
+            return
         }
+
+        let tabBarController = UIStoryboard(name: "Main", bundle: .main)
+            .instantiateViewController(withIdentifier: "TabBarViewController")
+        
+        window.rootViewController = tabBarController
     }
 }
 
@@ -105,29 +89,32 @@ extension SplashViewController: AuthViewControllerDelegate {
         UIBlockingProgressHUD.show()
         
         profileService.fetchProfile { [weak self] result in
+            guard let self = self else { return }
             UIBlockingProgressHUD.dismiss()
             
             switch result {
             case .success(let profile):
-                guard ProfileService.shared.profile != nil else {
-                    self?.showErrorAlert(message: "Данные профиля не загружены")
-                    return
-                }
                 print("✅ Профиль успешно загружен: \(profile.name)")
                 
-                ProfileImageService.shared.fetchProfileImageURL(username: profile.username) { _ in
-                    print("✅ Запрос аватара завершён")
+                ProfileImageService.shared.fetchProfileImageURL(username: profile.username) { result in
+                    if case .success(let imageURL) = result {
+                        KingfisherManager.shared.retrieveImage(with: URL(string: imageURL)!) { _ in
+                            print("✅ [Splash]: Аватар предзагружен")
+                        }
+                    }
+                    
                     DispatchQueue.main.async {
-                        self?.switchTabBarController()
+                        self.switchTabBarController()
                     }
                 }
                 
             case .failure(let error):
                 print("❌ Ошибка загрузки профиля: \(error.localizedDescription)")
-                self?.showErrorAlert(message: error.localizedDescription)
+                self.showErrorAlert(message: error.localizedDescription)
             }
         }
     }
+
     
     private func showErrorAlert(message: String) {
         let alert = UIAlertController(
