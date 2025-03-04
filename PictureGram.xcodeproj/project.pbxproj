@@ -35,7 +35,6 @@
 		487048DA2D22BD9200ECA14A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487048D92D22BD9200ECA14A /* ProfileViewController.swift */; };
 		48774B462D26B78C000563CF /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48774B452D26B78C000563CF /* SingleImageViewController.swift */; };
 		489BA9322D7357B200D95951 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489BA9312D7357B200D95951 /* TabBarController.swift */; };
-		489BA9342D74897700D95951 /* ImagesListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489BA9332D74896D00D95951 /* ImagesListService.swift */; };
 		48B165232D2C732B00ECBCB7 /* SF-Pro-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48B165212D2C732B00ECBCB7 /* SF-Pro-Italic.ttf */; };
 		48B165252D2C78F400ECBCB7 /* SF-Pro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48B165242D2C78F400ECBCB7 /* SF-Pro.ttf */; };
 		48B24EAB2D4C1B2F00B7C313 /* OAuth2Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B24EAA2D4C1B2F00B7C313 /* OAuth2Service.swift */; };
@@ -100,7 +99,6 @@
 		487048D92D22BD9200ECA14A /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		48774B452D26B78C000563CF /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 		489BA9312D7357B200D95951 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
-		489BA9332D74896D00D95951 /* ImagesListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListService.swift; sourceTree = "<group>"; };
 		489BA9392D74A5F500D95951 /* PictureGramTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PictureGramTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		48B165212D2C732B00ECBCB7 /* SF-Pro-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Italic.ttf"; sourceTree = "<group>"; };
 		48B165242D2C78F400ECBCB7 /* SF-Pro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro.ttf"; sourceTree = "<group>"; };
@@ -245,7 +243,6 @@
 		48B24EA92D4C1B1900B7C313 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				489BA9332D74896D00D95951 /* ImagesListService.swift */,
 				48B24EAA2D4C1B2F00B7C313 /* OAuth2Service.swift */,
 				48B24EB12D4D6BD700B7C313 /* OAuth2TokenStorage.swift */,
 				48EC174A2D5DEA2D005D1FD0 /* ProfileService.swift */,
@@ -481,7 +478,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				48BF2B6A2D14B20D00117091 /* ImagesListViewController.swift in Sources */,
-				489BA9342D74897700D95951 /* ImagesListService.swift in Sources */,
 				486515022D181B9700BF6118 /* Date + Extensions.swift in Sources */,
 				48B24EAB2D4C1B2F00B7C313 /* OAuth2Service.swift in Sources */,
 				48D48EE42D404B5E00649947 /* AuthViewController.swift in Sources */,
