@@ -34,9 +34,9 @@ final class ImagesListCell: UITableViewCell {
     }
     
     func setIsLiked(_ isLiked: Bool) {
-            let likeImage = isLiked ? UIImage(named: "Active.png") : UIImage(named: "No Active.png")
-            likeButton.setImage(likeImage, for: .normal)
-        }
+        let likeImage = isLiked ? UIImage(named: "Active.png") : UIImage(named: "No Active.png")
+        likeButton.setImage(likeImage, for: .normal)
+    }
     
     @IBAction func likeButtonClicked(_ sender: Any) {
         delegate?.imageListCellDidTapLike(self)
