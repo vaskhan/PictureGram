@@ -48,6 +48,7 @@ final class ProfileViewController: UIViewController {
     
     private var profile: Profile?
     private var profileImageServiceObserver: NSObjectProtocol?
+    private var profileServiceObserver: NSObjectProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,28 +57,75 @@ final class ProfileViewController: UIViewController {
         setupViews()
         setupConstraints()
         updateUI()
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] notification in
-                guard let self = self else { return }
-                
-                print("📬 [ProfileViewController]: Получено уведомление от ProfileImageService")
-                if let url = notification.userInfo?["URL"] as? String {
-                    print("📬 [ProfileViewController]: URL из userInfo: \(url)")
-                }
-                self.updateAvatar()
+        showLogoutAllert()
+        
+        profileServiceObserver = NotificationCenter.default.addObserver (
+            forName: ProfileService.didChangeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            guard let self = self else { return }
+            self.updateUI()
+        }
+        
+        profileImageServiceObserver = NotificationCenter.default.addObserver(
+            forName: ProfileImageService.didChangeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] notification in
+            guard let self = self else { return }
+            
+            print("📬 [ProfileViewController]: Получено уведомление от ProfileImageService")
+            if let url = notification.userInfo?["URL"] as? String {
+                print("📬 [ProfileViewController]: URL из userInfo: \(url)")
             }
-
+            self.updateAvatar()
+        }
+        
         updateAvatar()
+    }
+    
+    deinit {
+        if let profileServiceObserver = profileServiceObserver {
+            NotificationCenter.default.removeObserver(profileServiceObserver)
+        }
+        if let profileImageServiceObserver = profileImageServiceObserver {
+            NotificationCenter.default.removeObserver(profileImageServiceObserver)
+        }
+    }
+    
+    private func showLogoutAllert() {
+        let exitAction = UIAction { [weak self] _ in
+            guard let self = self else { return }
+            
+            let alert = UIAlertController(
+                title: "Пока, пока!",
+                message: "Уверены что хотите выйти?",
+                preferredStyle: .alert
+            )
+            
+            let yesAction = UIAlertAction(title: "Да", style: .default) { _ in
+                ProfileLogoutService.shared.logout()
+                
+                UIApplication.shared.windows.first?.rootViewController = SplashViewController()
+            }
+            
+            let noAction = UIAlertAction(title: "Нет", style: .default)
+            
+            alert.addAction(yesAction)
+            alert.addAction(noAction)
+            
+            self.present(alert, animated: true)
+        }
+        
+        exitButton.addAction(exitAction, for: .touchUpInside)
     }
     
     private func updateAvatar() {
         guard let avatarURL = ProfileImageService.shared.avatarURL,
               let url = URL(string: avatarURL) else {
             print("❌ [updateAvatar]: avatarURL отсутствует или некорректен")
+            profileImageView.image = UIImage(named: "Avatar")
             return
         }
         
@@ -105,6 +153,9 @@ final class ProfileViewController: UIViewController {
             descriptionLabel.text = profile.bio ?? "Нет описания"
         } else {
             print("❌ Профиль отсутствует в памяти")
+            view.subviews.forEach { $0.removeFromSuperview() }
+            setupViews()
+            setupConstraints()
         }
     }
     

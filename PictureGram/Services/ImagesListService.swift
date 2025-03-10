@@ -6,7 +6,6 @@
 //
 
 import UIKit
-
 import Foundation
 
 struct PhotoResult: Decodable {
@@ -34,6 +33,7 @@ struct PhotoResult: Decodable {
 struct UrlsResult: Decodable {
     let thumb: String
     let regular: String
+    let full: String
 }
 
 struct Photo {
@@ -43,30 +43,42 @@ struct Photo {
     let welcomeDescription: String?
     let thumbImageURL: String
     let largeImageURL: String
-    let isLiked: Bool
+    let fullImageURL: String
+    var isLiked: Bool
 }
-
-import Foundation
-import UIKit
 
 final class ImagesListService {
 
+    static let shared = ImagesListService()
     static let didChangeNotification = Notification.Name("ImagesListServiceDidChange")
+    
     private let photosPerPage = 10
-    private let authToken =  OAuth2TokenStorage().token
+    private let authToken = OAuth2TokenStorage().token
     private let urlSession = URLSession.shared
     private let dateFormatter: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withInternetDateTime]
         return formatter
     }()
-    
+
     private var lastLoadedPage = 0
     private var isLoading = false
     private(set) var photos: [Photo] = []
 
+    func clearPhotos() {
+        photos.removeAll()
+        lastLoadedPage = 0
+        NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: self)
+        print("Фото и данные страниц удалены")
+    }
+    
     func fetchPhotosNextPage() {
         guard !isLoading else { return }
+        guard let authToken else {
+            print("❌ Нет токена авторизации!")
+            return
+        }
+
         isLoading = true
         let nextPage = lastLoadedPage + 1
 
@@ -75,38 +87,44 @@ final class ImagesListService {
             URLQueryItem(name: "page", value: "\(nextPage)"),
             URLQueryItem(name: "per_page", value: "\(photosPerPage)")
         ]
-        
+
         var request = URLRequest(url: urlComponents.url!)
-        request.setValue("Bearer \(String(describing: authToken))", forHTTPHeaderField: "Authorization")
-        
-        let task = urlSession.dataTask(with: request) { [weak self] data, response, error in
+        request.setValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
+
+        print("Загружаем страницу \(nextPage)")
+
+        let task = urlSession.dataTask(with: request) { [weak self] data, _, error in
             guard
                 let self = self,
                 let data = data,
                 error == nil,
                 let photoResults = try? JSONDecoder().decode([PhotoResult].self, from: data)
             else {
+                print("❌ Ошибка загрузки или декодирования данных")
                 self?.isLoading = false
                 return
             }
 
-            let newPhotos: [Photo] = photoResults.map { photoResult in
-                let size = CGSize(width: photoResult.width, height: photoResult.height)
-                let createdAtDate = self.dateFormatter.date(from: photoResult.createdAt)
-                
-                return Photo(
-                    id: photoResult.id,
-                    size: size,
-                    createdAt: createdAtDate,
-                    welcomeDescription: photoResult.description,
-                    thumbImageURL: photoResult.urls.thumb,
-                    largeImageURL: photoResult.urls.regular,
-                    isLiked: photoResult.likedByUser
+            print("✅ Загружено фото: \(photoResults.count)")
+
+            let newPhotos = photoResults.map {
+                Photo(
+                    id: $0.id,
+                    size: CGSize(width: $0.width, height: $0.height),
+                    createdAt: self.dateFormatter.date(from: $0.createdAt),
+                    welcomeDescription: $0.description,
+                    thumbImageURL: $0.urls.thumb,
+                    largeImageURL: $0.urls.regular,
+                    fullImageURL: $0.urls.full,
+                    isLiked: $0.likedByUser
                 )
             }
 
             DispatchQueue.main.async {
-                self.photos.append(contentsOf: newPhotos)
+                let existingIDs = Set(self.photos.map { $0.id })
+                let filteredNewPhotos = newPhotos.filter { !existingIDs.contains($0.id) }
+                
+                self.photos.append(contentsOf: filteredNewPhotos)
                 self.lastLoadedPage = nextPage
                 self.isLoading = false
                 NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: self)
@@ -114,5 +132,44 @@ final class ImagesListService {
         }
         task.resume()
     }
+    
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let authToken else {
+            print("❌ Нет токена авторизации!")
+            completion(.failure(NSError(domain: "NoToken", code: 401, userInfo: nil)))
+            return
+        }
+        
+        let urlString = "https://api.unsplash.com/photos/\(photoId)/like"
+        guard let url = URL(string: urlString) else {
+            completion(.failure(NSError(domain: "InvalidUrl", code: 400, userInfo: nil)))
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = isLike ? "POST" : "DELETE"
+        request.setValue("Bearer \(String(describing: authToken))", forHTTPHeaderField: "Authorization")
+        
+        let task = urlSession.dataTask(with: request) { [weak self] data, response, error in
+            guard let self = self else { return }
+        
+            if let error = error {
+                print("Ошибка получения лайка \(error.localizedDescription)")
+                completion(.failure(error))
+                return
+            }
+            
+            if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                var photo = self.photos[index]
+                photo.isLiked.toggle()
+                self.photos[index] = photo
+                
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: self)
+                    completion(.success(()))
+                }
+            }
+        }
+        task.resume()
+    }
 }
-
