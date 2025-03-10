@@ -11,6 +11,7 @@ final class ProfileService {
     
     // MARK: - Public Properties
     static let shared = ProfileService()
+    static let didChangeNotification = Notification.Name(rawValue: "ProfileServiceDidChange")
     private(set) var profile: Profile?
     
     // MARK: - Private Properties
@@ -19,6 +20,12 @@ final class ProfileService {
     
     // MARK: - Initializers
     private init() {}
+    
+    func clearProfile() {
+        profile = nil
+        NotificationCenter.default.post(name: ProfileService.didChangeNotification, object: self)
+        print("Профиль удален")
+    }
     
     // MARK: - Public Methods
     func fetchProfile(completion: @escaping (Result<Profile, Error>) -> Void) {

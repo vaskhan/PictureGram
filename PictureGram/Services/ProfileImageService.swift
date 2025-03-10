@@ -9,13 +9,19 @@ import Foundation
 
 final class ProfileImageService {
     static let shared = ProfileImageService()
-    static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
+    static let didChangeNotification = Notification.Name(rawValue: "ProfileImageServiceDidChange")
     private let baseURL = "https://api.unsplash.com/users"
     private let authToken = OAuth2TokenStorage().token
     
     private(set) var avatarURL: String?
     
     private init() {}
+    
+    func clearAvatar() {
+        avatarURL = nil
+        NotificationCenter.default.post(name: ProfileImageService.didChangeNotification, object: self)
+            print("Аватарка удалена")
+    }
     
     func fetchProfileImageURL(
             username: String,
