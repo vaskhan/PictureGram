@@ -9,6 +9,11 @@ import UIKit
 
 final class ImagesListViewController: UIViewController {
     
+    var testPhotos: [Photo] {
+        get { return photos }
+        set { photos = newValue }
+    }
+    
     // MARK: - IB Outlets
     @IBOutlet private var tableView: UITableView!
     

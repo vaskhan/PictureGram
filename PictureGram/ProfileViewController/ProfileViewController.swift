@@ -10,13 +10,13 @@ import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
-    private let profileImageView: UIImageView = {
+    @objc private let profileImageView: UIImageView = {
         let image = UIImage(named: "Avatar")
         let view = UIImageView(image: image)
         return view
     }()
     
-    private let nameLabel: UILabel = {
+    @objc private let nameLabel: UILabel = {
         let label = UILabel()
         label.text = "Екатерина Новикова"
         label.font = UIFont(name: "SFPro-Bold", size: 23)
@@ -24,7 +24,7 @@ final class ProfileViewController: UIViewController {
         return label
     }()
     
-    private let loginLabel: UILabel = {
+    @objc private let loginLabel: UILabel = {
         let label = UILabel()
         label.text = "@ekaterina_nov"
         label.font = UIFont(name: "SFPro-Regular", size: 13)
@@ -32,7 +32,7 @@ final class ProfileViewController: UIViewController {
         return label
     }()
     
-    private let descriptionLabel: UILabel = {
+    @objc private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "Hello, world!"
         label.font = UIFont(name: "SFPro-Regular", size: 13)
@@ -121,7 +121,7 @@ final class ProfileViewController: UIViewController {
         exitButton.addAction(exitAction, for: .touchUpInside)
     }
     
-    private func updateAvatar() {
+    func updateAvatar() {
         guard let avatarURL = ProfileImageService.shared.avatarURL,
               let url = URL(string: avatarURL) else {
             print("❌ [updateAvatar]: avatarURL отсутствует или некорректен")
@@ -145,7 +145,7 @@ final class ProfileViewController: UIViewController {
         }
     }
     
-    private func updateUI() {
+    func updateUI() {
         if let profile = ProfileService.shared.profile {
             print("✅ Отображаем профиль из памяти: \(profile.name)")
             nameLabel.text = profile.name

@@ -141,7 +141,7 @@
         <!--Single Image View Controller-->
         <scene sceneID="oEk-nF-aEO">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="YC8-z2-E4d" customClass="SingleImageViewController" customModule="PictureGram" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SingleImageViewController" modalPresentationStyle="fullScreen" id="YC8-z2-E4d" customClass="SingleImageViewController" customModule="PictureGram" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Qqs-s6-JTd">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -285,7 +285,7 @@
         <!--WebView View Controller-->
         <scene sceneID="vF8-ho-Tl5">
             <objects>
-                <viewController title="WebView View Controller" id="503-kC-3OR" customClass="WebViewViewController" customModule="PictureGram" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WebViewViewController" title="WebView View Controller" id="503-kC-3OR" customClass="WebViewViewController" customModule="PictureGram" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mh5-q7-2ki">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

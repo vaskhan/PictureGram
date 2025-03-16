@@ -12,7 +12,7 @@ final class ProfileService {
     // MARK: - Public Properties
     static let shared = ProfileService()
     static let didChangeNotification = Notification.Name(rawValue: "ProfileServiceDidChange")
-    private(set) var profile: Profile?
+    var profile: Profile?
     
     // MARK: - Private Properties
     private let baseURL = "https://api.unsplash.com/me"
