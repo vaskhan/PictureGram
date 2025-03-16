@@ -34,10 +34,13 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
             return
         }
         
+        let webViewPresenter = WebViewPresenter()
+        webViewViewController.presenter = webViewPresenter
+        webViewPresenter.view = webViewViewController
         webViewViewController.delegate = self
         print("✅ Делегат WebViewViewController установлен")
     }
-
+    
     
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         UIBlockingProgressHUD.show()
