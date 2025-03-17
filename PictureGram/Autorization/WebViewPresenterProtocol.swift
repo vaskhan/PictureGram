@@ -12,13 +12,18 @@ public protocol WebViewPresenterProtocol {
     var view: WebViewViewControllerProtocol? { get set }
     func viewDidLoad()
     func didUpdateProgressValue(_ newValue: Double)
-    func code(from navigationAction: WKNavigationAction) -> String?
 }
 
 final class WebViewPresenter: NSObject, WebViewPresenterProtocol {
     var view: WebViewViewControllerProtocol?
     weak var delegate: WebViewViewControllerDelegate?
-
+    
+    private let authHelper: AuthHelperProtocol
+    
+    init(authHelper: AuthHelperProtocol = AuthHelper()) {
+        self.authHelper = authHelper
+    }
+    
     func viewDidLoad() {
         loadAuthView()
     }
@@ -26,7 +31,7 @@ final class WebViewPresenter: NSObject, WebViewPresenterProtocol {
     func didUpdateProgressValue(_ newValue: Double) {
         let newProgressValue = Float(newValue)
         view?.setProgressValue(newProgressValue)
-
+        
         let shouldHideProgress = shouldHideProgress(for: newProgressValue)
         view?.setProgressHidden(shouldHideProgress)
     }
@@ -35,46 +40,13 @@ final class WebViewPresenter: NSObject, WebViewPresenterProtocol {
         abs(value - 1.0) <= 0.0001
     }
 
-    func code(from request: URLRequest) -> String? {
-        if let url = request.url,
-           let urlComponents = URLComponents(string: url.absoluteString),
-           urlComponents.path == "/oauth/authorize/native",
-           let items = urlComponents.queryItems,
-           let codeItem = items.first(where: { $0.name == "code" })
-        {
-            return codeItem.value
-        } else {
-            return nil
-        }
-    }
-    
-    func code(from navigationAction: WKNavigationAction) -> String? {
-        return code(from: navigationAction.request)
-    }
-
-    func loadAuthView() {
-        guard
-            var urlComponents = URLComponents(
-                string: AuthConfiguration.standard.authURLString)
-        else {
+    private func loadAuthView() {
+        guard let request = authHelper.authRequest() else {
+            print("❌ Не удалось получить request от AuthHelper")
             return
         }
-
-        urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: AuthConfiguration.standard.accessKey),
-            URLQueryItem(name: "redirect_uri", value: AuthConfiguration.standard.redirectURI),
-            URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: AuthConfiguration.standard.accessScope),
-        ]
-
-        guard let url = urlComponents.url else {
-            return
-        }
-
-        let request = URLRequest(url: url)
 
         didUpdateProgressValue(0)
-
         view?.load(request: request)
     }
 }
@@ -85,10 +57,9 @@ extension WebViewPresenter: WKNavigationDelegate {
         decidePolicyFor navigationAction: WKNavigationAction,
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
-        if let code = code(from: navigationAction) {
+        if let code = authHelper.code(from: navigationAction) {
             if let viewController = view as? WebViewViewController {
-                delegate?.webViewViewController(
-                    viewController, didAuthenticateWithCode: code)
+                delegate?.webViewViewController(viewController, didAuthenticateWithCode: code)
             }
             decisionHandler(.cancel)
         } else {
@@ -96,3 +67,6 @@ extension WebViewPresenter: WKNavigationDelegate {
         }
     }
 }
+
+
+

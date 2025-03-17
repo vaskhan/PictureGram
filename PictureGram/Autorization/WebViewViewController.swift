@@ -47,6 +47,7 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
     }
 
     func load(request: URLRequest) {
+        print("🚀 Загружаю request в webView: \(request.url?.absoluteString ?? "nil")")
         webView.load(request)
     }
 

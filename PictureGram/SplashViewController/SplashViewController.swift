@@ -21,6 +21,8 @@ final class SplashViewController: UIViewController {
         return imageView
     }()
     
+    private var isAuthCompleted = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupConfigUI()
@@ -28,8 +30,11 @@ final class SplashViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
         print("🚀 SplashViewController появился на экране")
-        checkAuth()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+                self?.checkAuth()
+            }
     }
     
     private func setupConfigUI() {
@@ -45,6 +50,11 @@ final class SplashViewController: UIViewController {
     private func checkAuth() {
         print("🔑 Проверяем авторизацию...")
         print("📦 Текущий токен: \(storage.token ?? "nil")")
+        
+        if isAuthCompleted {
+                print("✅ Авторизация уже завершена, не проверяем токен заново!")
+                return
+            }
         
         if storage.token != nil {
             fetchProfileData()
@@ -76,6 +86,7 @@ final class SplashViewController: UIViewController {
 
 extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ vc: AuthViewController) {
+        isAuthCompleted = true
         vc.dismiss(animated: true) { [weak self] in
             print("✅ Экран авторизации закрыт, загружаем профиль...")
             guard let self = self else { return }

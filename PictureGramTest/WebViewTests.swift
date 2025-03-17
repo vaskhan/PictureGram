@@ -27,7 +27,8 @@ final class WebViewTests: XCTestCase {
     
     func testPresenterCallsLoadRequest() {
         let viewController = WebViewViewControllerSpy()
-        let presenter = WebViewPresenter()
+        
+        let presenter = WebViewPresenter(authHelper: AuthHelper())
         viewController.presenter = presenter
         presenter.view = viewController
         
@@ -58,18 +59,15 @@ final class WebViewTests: XCTestCase {
     
     func testAuthURL() {
         let configuration = AuthConfiguration.standard
-        let viewController = WebViewViewControllerSpy()
-        let presenter = WebViewPresenter()
-        presenter.view = viewController
-
-        presenter.viewDidLoad()
-
-        guard let request = viewController.cureentRequest,
-              let urlString = request.url?.absoluteString else {
+        let authHelper = AuthHelper(configuration: configuration)
+        
+        let url = authHelper.authURL()
+        
+        guard let urlString = url?.absoluteString else {
             XCTFail("Auth URL is nil")
             return
         }
-
+        
         XCTAssertTrue(urlString.contains(configuration.authURLString))
         XCTAssertTrue(urlString.contains(configuration.accessKey))
         XCTAssertTrue(urlString.contains(configuration.redirectURI))
@@ -78,23 +76,24 @@ final class WebViewTests: XCTestCase {
     }
     
     func testCodeFromURL() {
+        let authHelper = AuthHelper()
+
         var components = URLComponents(string: "https://unsplash.com/oauth/authorize/native")!
         components.queryItems = [URLQueryItem(name: "code", value: "test code")]
-        
+
         guard let url = components.url else {
-                XCTFail("Not created URL")
-                return
-            }
-        
+            XCTFail("URL не создан")
+            return
+        }
+
         let request = URLRequest(url: url)
-        let presenter = WebViewPresenter()
         
-        
-        let code = presenter.code(from: request)
-        
+        let code = authHelper.code(from: request)
+
         XCTAssertEqual(code, "test code")
     }
 
+    
 }
 
 final class WebViewPresenterSpy: WebViewPresenterProtocol {
@@ -117,11 +116,9 @@ final class WebViewViewControllerSpy: WebViewViewControllerProtocol {
     var presenter: PictureGram.WebViewPresenterProtocol?
     
     var loadRequestCalled: Bool = false
-    var cureentRequest: URLRequest?
     
     func load(request: URLRequest) {
         loadRequestCalled = true
-        cureentRequest = request
     }
     
     func setProgressValue(_ newValue: Float) {}

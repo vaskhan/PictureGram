@@ -34,10 +34,14 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
             return
         }
         
-        let webViewPresenter = WebViewPresenter()
+        let authHelper = AuthHelper()
+        let webViewPresenter = WebViewPresenter(authHelper: authHelper)
+        
         webViewViewController.presenter = webViewPresenter
         webViewPresenter.view = webViewViewController
+        webViewPresenter.delegate = self
         webViewViewController.delegate = self
+        
         print("✅ Делегат WebViewViewController установлен")
     }
     
@@ -60,7 +64,9 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
                         }
                         
                         print("🔍 Delegate в AuthViewController: \(self.delegate == nil ? "nil" : "установлен")")
-                        self.delegate?.didAuthenticate(self)
+                        self.dismiss(animated: true) {
+                            self.delegate?.didAuthenticate(self)
+                        }
                     }
                     
                 case .failure(let error):
