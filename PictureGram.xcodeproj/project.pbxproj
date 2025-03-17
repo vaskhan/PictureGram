@@ -30,6 +30,7 @@
 		4802D5832D1789FC0060ADA0 /* 19.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4802D56E2D1789FC0060ADA0 /* 19.jpg */; };
 		4802D5892D179C250060ADA0 /* Active.png in Resources */ = {isa = PBXBuildFile; fileRef = 4802D5882D179C250060ADA0 /* Active.png */; };
 		481CFBDE2D88ACE400933770 /* AuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481CFBDD2D88ACE300933770 /* AuthHelper.swift */; };
+		481CFBE02D88CAAC00933770 /* ProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481CFBDF2D88CAAC00933770 /* ProfilePresenter.swift */; };
 		48549BE82D871F5A003A23CA /* WebViewPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48549BE72D871F5A003A23CA /* WebViewPresenterProtocol.swift */; };
 		4857E5DE2D5BD1DC00D1F94E /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 4857E5DD2D5BD1DC00D1F94E /* ProgressHUD */; };
 		486514FF2D18120C00BF6118 /* No Active.png in Resources */ = {isa = PBXBuildFile; fileRef = 486514FE2D18120C00BF6118 /* No Active.png */; };
@@ -106,6 +107,7 @@
 		4802D56E2D1789FC0060ADA0 /* 19.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 19.jpg; sourceTree = "<group>"; };
 		4802D5882D179C250060ADA0 /* Active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Active.png; sourceTree = "<group>"; };
 		481CFBDD2D88ACE300933770 /* AuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthHelper.swift; sourceTree = "<group>"; };
+		481CFBDF2D88CAAC00933770 /* ProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePresenter.swift; sourceTree = "<group>"; };
 		48549BE72D871F5A003A23CA /* WebViewPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewPresenterProtocol.swift; sourceTree = "<group>"; };
 		48549BF12D8766DD003A23CA /* PictureGramTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PictureGramTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		486514FE2D18120C00BF6118 /* No Active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "No Active.png"; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 		48774B482D27211B000563CF /* ProfileViewController */ = {
 			isa = PBXGroup;
 			children = (
+				481CFBDF2D88CAAC00933770 /* ProfilePresenter.swift */,
 				487048D92D22BD9200ECA14A /* ProfileViewController.swift */,
 			);
 			path = ProfileViewController;
@@ -575,6 +578,7 @@
 				48C04FC02D18A15700C64422 /* Gradient.swift in Sources */,
 				48D48EE12D3EE46C00649947 /* AuthConfiguration.swift in Sources */,
 				48549BE82D871F5A003A23CA /* WebViewPresenterProtocol.swift in Sources */,
+				481CFBE02D88CAAC00933770 /* ProfilePresenter.swift in Sources */,
 				48DAEB822D60E83D0054B1EB /* ProfileImageService.swift in Sources */,
 				48B24EB42D4EC3E100B7C313 /* SplashViewController.swift in Sources */,
 				48EC17492D5DD277005D1FD0 /* UIBlockingProgressHUD.swift in Sources */,

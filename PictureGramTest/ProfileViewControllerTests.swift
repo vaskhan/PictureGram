@@ -10,47 +10,56 @@ import XCTest
 @testable import PictureGram
 
 final class ProfileViewControllerTests: XCTestCase {
-    
-    var sut: ProfileViewController!
-    
-    override func setUp() {
-        super.setUp()
-        sut = ProfileViewController()
-        _ = sut.view
+
+    func testViewDidLoad_CallsPresenterViewDidLoad() {
+        
+        let presenter = ProfilePresenterSpy()
+        let viewController = ProfileViewController(presenter: presenter)
+
+        _ = viewController.view
+
+        XCTAssertTrue(presenter.viewDidLoadCalled)
     }
-    
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
+
+    func testUpdatesProfileAndUILabels() {
+        
+        let presenter = ProfilePresenterSpy()
+        let viewController = ProfileViewController(presenter: presenter)
+
+        _ = viewController.view
+
+        viewController.updateProfile(name: "name", login: "@login", bio: "bio")
+
+        XCTAssertEqual(viewController.nameLabel.text, "name")
+        XCTAssertEqual(viewController.loginLabel.text, "@login")
+        XCTAssertEqual(viewController.descriptionLabel.text, "bio")
     }
-    
-    func testUpdateUI() {
-        let dummyProfile = Profile(username: "testuser",
-                                   name: "Test User",
-                                   loginName: "@testuser",
-                                   bio: "Test bio")
+
+    func testLogoutButtonTap() {
         
-        ProfileService.shared.profile = dummyProfile
-        sut.updateUI()
+        let presenter = ProfilePresenterSpy()
+        let viewController = ProfileViewController(presenter: presenter)
+
+        _ = viewController.view
         
-        let nameLabel = sut.value(forKey: "nameLabel") as? UILabel
-        let loginLabel = sut.value(forKey: "loginLabel") as? UILabel
-        let descriptionLabel = sut.value(forKey: "descriptionLabel") as? UILabel
-        
-        XCTAssertEqual(nameLabel?.text, dummyProfile.name)
-        XCTAssertEqual(loginLabel?.text, dummyProfile.loginName)
-        XCTAssertEqual(descriptionLabel?.text, dummyProfile.bio ?? "Нет описания")
-    }
-    
-    func testUpdateAvatar() {
-        
-        ProfileImageService.shared.avatarURL = nil
-        
-        sut.updateAvatar()
-        
-        let profileImageView = sut.value(forKey: "profileImageView") as? UIImageView
-        let defaultImage = UIImage(named: "Avatar")
-        XCTAssertNotNil(profileImageView?.image)
-        XCTAssertEqual(profileImageView?.image?.pngData(), defaultImage?.pngData())
+        viewController.exitButton.sendActions(for: .touchUpInside)
+
+        XCTAssertTrue(presenter.logoutButtonTappedCalled)
     }
 }
+
+final class ProfilePresenterSpy: ProfilePresenterProtocol {
+
+    var viewDidLoadCalled = false
+    var logoutButtonTappedCalled = false
+
+    func viewDidLoad() {
+        viewDidLoadCalled = true
+    }
+
+    func logoutButtonTapped() {
+        logoutButtonTappedCalled = true
+    }
+}
+
+
