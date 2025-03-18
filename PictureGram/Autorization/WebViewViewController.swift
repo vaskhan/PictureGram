@@ -33,6 +33,7 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
         progressView.progress = 0
 
         webView.navigationDelegate = presenter as? WKNavigationDelegate
+        webView.accessibilityIdentifier = "WebViewViewController"
 
         presenter?.viewDidLoad()
 

@@ -51,6 +51,7 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
     let exitButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "exitButtonImage")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.accessibilityIdentifier = "Logout"
         return button
     }()
     

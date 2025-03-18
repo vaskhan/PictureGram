@@ -68,6 +68,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		481CFBF32D897F6C00933770 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 48BF2B5A2D14B20D00117091 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 48BF2B612D14B20D00117091;
+			remoteInfo = PictureGram;
+		};
 		48549BF52D8766DD003A23CA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 48BF2B5A2D14B20D00117091 /* Project object */;
@@ -110,6 +117,7 @@
 		481CFBDD2D88ACE300933770 /* AuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthHelper.swift; sourceTree = "<group>"; };
 		481CFBDF2D88CAAC00933770 /* ProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePresenter.swift; sourceTree = "<group>"; };
 		481CFBE32D89568000933770 /* ImagesListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListPresenter.swift; sourceTree = "<group>"; };
+		481CFBED2D897F6C00933770 /* PictureGramUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PictureGramUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		48549BE72D871F5A003A23CA /* WebViewPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewPresenterProtocol.swift; sourceTree = "<group>"; };
 		48549BF12D8766DD003A23CA /* PictureGramTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PictureGramTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		486514FE2D18120C00BF6118 /* No Active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "No Active.png"; sourceTree = "<group>"; };
@@ -147,10 +155,18 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		481CFBEE2D897F6C00933770 /* PictureGramUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = PictureGramUITests; sourceTree = "<group>"; };
 		48549BF22D8766DD003A23CA /* PictureGramTest */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = PictureGramTest; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		481CFBEA2D897F6C00933770 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		48549BEE2D8766DD003A23CA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -326,6 +342,7 @@
 			children = (
 				48BF2B642D14B20D00117091 /* PictureGram */,
 				48549BF22D8766DD003A23CA /* PictureGramTest */,
+				481CFBEE2D897F6C00933770 /* PictureGramUITests */,
 				48BF2B632D14B20D00117091 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -336,6 +353,7 @@
 				48BF2B622D14B20D00117091 /* PictureGram.app */,
 				489BA9392D74A5F500D95951 /* PictureGramTests.xctest */,
 				48549BF12D8766DD003A23CA /* PictureGramTest.xctest */,
+				481CFBED2D897F6C00933770 /* PictureGramUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -375,6 +393,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		481CFBEC2D897F6C00933770 /* PictureGramUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 481CFBF52D897F6C00933770 /* Build configuration list for PBXNativeTarget "PictureGramUITests" */;
+			buildPhases = (
+				481CFBE92D897F6C00933770 /* Sources */,
+				481CFBEA2D897F6C00933770 /* Frameworks */,
+				481CFBEB2D897F6C00933770 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				481CFBF42D897F6C00933770 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				481CFBEE2D897F6C00933770 /* PictureGramUITests */,
+			);
+			name = PictureGramUITests;
+			packageProductDependencies = (
+			);
+			productName = PictureGramUITests;
+			productReference = 481CFBED2D897F6C00933770 /* PictureGramUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		48549BF02D8766DD003A23CA /* PictureGramTest */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 48549BF72D8766DD003A23CA /* Build configuration list for PBXNativeTarget "PictureGramTest" */;
@@ -450,6 +491,10 @@
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1540;
 				TargetAttributes = {
+					481CFBEC2D897F6C00933770 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 48BF2B612D14B20D00117091;
+					};
 					48549BF02D8766DD003A23CA = {
 						CreatedOnToolsVersion = 16.2;
 						TestTargetID = 48BF2B612D14B20D00117091;
@@ -484,11 +529,19 @@
 				48BF2B612D14B20D00117091 /* PictureGram */,
 				489BA9382D74A5F500D95951 /* PictureGramTests */,
 				48549BF02D8766DD003A23CA /* PictureGramTest */,
+				481CFBEC2D897F6C00933770 /* PictureGramUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		481CFBEB2D897F6C00933770 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		48549BEF2D8766DD003A23CA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -540,6 +593,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		481CFBE92D897F6C00933770 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		48549BED2D8766DD003A23CA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -592,6 +652,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		481CFBF42D897F6C00933770 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 48BF2B612D14B20D00117091 /* PictureGram */;
+			targetProxy = 481CFBF32D897F6C00933770 /* PBXContainerItemProxy */;
+		};
 		48549BF62D8766DD003A23CA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 48BF2B612D14B20D00117091 /* PictureGram */;
@@ -624,6 +689,42 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		481CFBF62D897F6C00933770 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y5WH4AQ9FW;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vvkhanin.PictureGramUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = PictureGram;
+			};
+			name = Debug;
+		};
+		481CFBF72D897F6C00933770 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y5WH4AQ9FW;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vvkhanin.PictureGramUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = PictureGram;
+			};
+			name = Release;
+		};
 		48549BF82D8766DD003A23CA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -886,6 +987,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		481CFBF52D897F6C00933770 /* Build configuration list for PBXNativeTarget "PictureGramUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				481CFBF62D897F6C00933770 /* Debug */,
+				481CFBF72D897F6C00933770 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		48549BF72D8766DD003A23CA /* Build configuration list for PBXNativeTarget "PictureGramTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

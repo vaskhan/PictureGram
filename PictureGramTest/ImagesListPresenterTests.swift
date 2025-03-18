@@ -53,7 +53,7 @@ final class ImagesListPresenterTests: XCTestCase {
 }
 
 final class ImagesListViewSpy: ImagesListViewProtocol {
-
+    
     var reloadTableAnimatedCalled = false
     var showLikeErrorAlertCalled = false
 
@@ -63,6 +63,9 @@ final class ImagesListViewSpy: ImagesListViewProtocol {
 
     func showLikeErrorAlert() {
         showLikeErrorAlertCalled = true
+    }
+    
+    func reloadRow(at index: Int) {
     }
 }
 
