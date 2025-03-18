@@ -8,6 +8,12 @@
 import UIKit
 import Foundation
 
+protocol ImagesListServiceProtocol {
+    var photos: [Photo] { get }
+    func fetchPhotosNextPage()
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void)
+}
+
 struct PhotoResult: Decodable {
     let id: String
     let createdAt: String
@@ -47,7 +53,7 @@ struct Photo {
     var isLiked: Bool
 }
 
-final class ImagesListService {
+final class ImagesListService: ImagesListServiceProtocol {
 
     static let shared = ImagesListService()
     static let didChangeNotification = Notification.Name("ImagesListServiceDidChange")
