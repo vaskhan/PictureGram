@@ -47,15 +47,27 @@ final class ImagesListPresenterTests: XCTestCase {
 
         presenter.viewDidLoad()
         presenter.didTapLike(at: 0)
-
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
+        
         XCTAssertTrue(view.showLikeErrorAlertCalled)
+    }
+    
+    func testDidTapLike_ShowsAndHidesLoading() {
+        presenter.viewDidLoad()
+        presenter.didTapLike(at: 0)
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
+        
+        XCTAssertTrue(view.showLoadingCalled)
+        XCTAssertTrue(view.hideLoadingCalled)
     }
 }
 
 final class ImagesListViewSpy: ImagesListViewProtocol {
-    
+
     var reloadTableAnimatedCalled = false
     var showLikeErrorAlertCalled = false
+    var showLoadingCalled = false
+    var hideLoadingCalled = false
 
     func reloadTableAnimated(oldCount: Int, newCount: Int) {
         reloadTableAnimatedCalled = true
@@ -64,10 +76,19 @@ final class ImagesListViewSpy: ImagesListViewProtocol {
     func showLikeErrorAlert() {
         showLikeErrorAlertCalled = true
     }
-    
-    func reloadRow(at index: Int) {
+
+    func showLoading() {
+        showLoadingCalled = true
+    }
+
+    func hideLoading() {
+        hideLoadingCalled = true
+    }
+
+    func updateLikeButton(at index: Int, isLiked: Bool) {
     }
 }
+
 
 final class ImagesListServiceStub: ImagesListServiceProtocol {
 
@@ -100,6 +121,7 @@ final class ImagesListServiceStub: ImagesListServiceProtocol {
 
     func fetchPhotosNextPage() {
         fetchNextPageCalled = true
+        NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: nil)
     }
 
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {

@@ -13,6 +13,7 @@ protocol ProfileViewProtocol: AnyObject {
     func updateProfile(name: String, login: String, bio: String)
     func updateAvatar(url: URL?)
     func showLogoutAlert()
+    func navigateToSplashScreen()
 }
 
 final class ProfileViewController: UIViewController, ProfileViewProtocol {
@@ -103,8 +104,7 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
         )
         
         let yesAction = UIAlertAction(title: "Да", style: .default) { [weak self] _ in
-            guard let presenter = self?.presenter as? ProfilePresenter else { return }
-            presenter.confirmLogout()
+            self?.presenter?.confirmLogout()
         }
         
         let noAction = UIAlertAction(title: "Нет", style: .default)
@@ -117,6 +117,10 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
     
     func setPresenter(_ presenter: ProfilePresenterProtocol) {
         self.presenter = presenter
+    }
+    
+    func navigateToSplashScreen() {
+        UIApplication.shared.windows.first?.rootViewController = SplashViewController()
     }
     
     // MARK: - UI Setup

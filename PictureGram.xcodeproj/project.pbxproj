@@ -32,7 +32,7 @@
 		481CFBDE2D88ACE400933770 /* AuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481CFBDD2D88ACE300933770 /* AuthHelper.swift */; };
 		481CFBE02D88CAAC00933770 /* ProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481CFBDF2D88CAAC00933770 /* ProfilePresenter.swift */; };
 		481CFBE42D89568000933770 /* ImagesListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481CFBE32D89568000933770 /* ImagesListPresenter.swift */; };
-		48549BE82D871F5A003A23CA /* WebViewPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48549BE72D871F5A003A23CA /* WebViewPresenterProtocol.swift */; };
+		48549BE82D871F5A003A23CA /* WebViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48549BE72D871F5A003A23CA /* WebViewPresenter.swift */; };
 		4857E5DE2D5BD1DC00D1F94E /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 4857E5DD2D5BD1DC00D1F94E /* ProgressHUD */; };
 		486514FF2D18120C00BF6118 /* No Active.png in Resources */ = {isa = PBXBuildFile; fileRef = 486514FE2D18120C00BF6118 /* No Active.png */; };
 		486515022D181B9700BF6118 /* Date + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486515012D181B9700BF6118 /* Date + Extensions.swift */; };
@@ -118,7 +118,7 @@
 		481CFBDF2D88CAAC00933770 /* ProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePresenter.swift; sourceTree = "<group>"; };
 		481CFBE32D89568000933770 /* ImagesListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListPresenter.swift; sourceTree = "<group>"; };
 		481CFBED2D897F6C00933770 /* PictureGramUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PictureGramUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		48549BE72D871F5A003A23CA /* WebViewPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewPresenterProtocol.swift; sourceTree = "<group>"; };
+		48549BE72D871F5A003A23CA /* WebViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewPresenter.swift; sourceTree = "<group>"; };
 		48549BF12D8766DD003A23CA /* PictureGramTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PictureGramTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		486514FE2D18120C00BF6118 /* No Active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "No Active.png"; sourceTree = "<group>"; };
 		486515012D181B9700BF6118 /* Date + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date + Extensions.swift"; sourceTree = "<group>"; };
@@ -383,7 +383,7 @@
 		48D48EE22D404B3F00649947 /* Autorization */ = {
 			isa = PBXGroup;
 			children = (
-				48549BE72D871F5A003A23CA /* WebViewPresenterProtocol.swift */,
+				48549BE72D871F5A003A23CA /* WebViewPresenter.swift */,
 				48D48EE32D404B5E00649947 /* AuthViewController.swift */,
 				48D48EE52D41805500649947 /* WebViewViewController.swift */,
 			);
@@ -640,7 +640,7 @@
 				48EC174B2D5DEA2D005D1FD0 /* ProfileService.swift in Sources */,
 				48C04FC02D18A15700C64422 /* Gradient.swift in Sources */,
 				48D48EE12D3EE46C00649947 /* AuthConfiguration.swift in Sources */,
-				48549BE82D871F5A003A23CA /* WebViewPresenterProtocol.swift in Sources */,
+				48549BE82D871F5A003A23CA /* WebViewPresenter.swift in Sources */,
 				481CFBE02D88CAAC00933770 /* ProfilePresenter.swift in Sources */,
 				48DAEB822D60E83D0054B1EB /* ProfileImageService.swift in Sources */,
 				48B24EB42D4EC3E100B7C313 /* SplashViewController.swift in Sources */,

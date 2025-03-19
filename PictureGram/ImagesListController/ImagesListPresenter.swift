@@ -5,7 +5,7 @@
 //  Created by Василий Ханин on 18.03.2025.
 //
 
-import UIKit
+import Foundation
 
 protocol ImagesListPresenterProtocol {
     var photosCount: Int { get }
@@ -17,15 +17,21 @@ protocol ImagesListPresenterProtocol {
 }
 
 final class ImagesListPresenter: ImagesListPresenterProtocol {
+    var photos: [Photo] = []
     
     private weak var view: ImagesListViewProtocol?
     private let imagesListService: ImagesListServiceProtocol
-    private var photos: [Photo] = []
     private var imagesListServiceObserver: NSObjectProtocol?
     
     init(view: ImagesListViewProtocol, service: ImagesListServiceProtocol = ImagesListService.shared) {
         self.view = view
         self.imagesListService = service
+    }
+    
+    deinit {
+        if let observer = imagesListServiceObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
     
     var photosCount: Int {
@@ -59,23 +65,20 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
     func didTapLike(at index: Int) {
         let photo = photos[index]
         
-        UIBlockingProgressHUD.show()
+        view?.showLoading()
         
         imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { [weak self] result in
             guard let self = self else { return }
             
-            UIBlockingProgressHUD.dismiss()
-            
-            switch result {
-            case .success:
-                self.photos[index].isLiked.toggle()
+            DispatchQueue.main.async {
+                self.view?.hideLoading()
                 
-                DispatchQueue.main.async {
-                    self.view?.reloadRow(at: index)
-                }
-                
-            case .failure:
-                DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self.photos[index].isLiked.toggle()
+                    self.view?.updateLikeButton(at: index, isLiked: self.photos[index].isLiked)
+                    
+                case .failure:
                     self.view?.showLikeErrorAlert()
                 }
             }

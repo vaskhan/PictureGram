@@ -7,7 +7,7 @@
 
 import XCTest
 
-class PictureGramUITests: XCTestCase {
+final class PictureGramUITests: XCTestCase {
     private let app = XCUIApplication()
     
     override func setUpWithError() throws {
@@ -41,23 +41,23 @@ class PictureGramUITests: XCTestCase {
         let webView = app.webViews["WebViewViewController"]
         XCTAssertTrue(webView.waitForExistence(timeout: 5), "webview не загрузился")
 
-        UIPasteboard.general.string = "ya.v.khanin@gmail.com"
+        UIPasteboard.general.string = ""
         let loginTextField = webView.descendants(matching: .textField).element
         XCTAssertTrue(loginTextField.waitForExistence(timeout: 3))
         loginTextField.tap()
         loginTextField.doubleTap()
         
         pasteText(for: app)
-        webView.swipeUp()
+        app.toolbars.buttons["Done"].tap()
         
-        UIPasteboard.general.string = "K6t8y8jyFJJ"
+        UIPasteboard.general.string = ""
         let passwordTextField = webView.descendants(matching: .secureTextField).element
         XCTAssertTrue(passwordTextField.waitForExistence(timeout: 3))
         passwordTextField.tap()
         passwordTextField.doubleTap()
         
         pasteText(for: app)
-        webView.swipeUp()
+        app.toolbars.buttons["Done"].tap()
         
         let loginButton = webView.buttons["Login"]
         XCTAssertTrue(loginButton.waitForExistence(timeout: 3))

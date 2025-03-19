@@ -31,14 +31,23 @@ final class ProfilePresenterTests: XCTestCase {
     }
     
     func testLogoutButtonTapped() {
-
-            let view = ProfileViewSpy()
-            let presenter = ProfilePresenter(view: view)
-            
-            presenter.logoutButtonTapped()
-            
-            XCTAssertTrue(view.showLogoutAlertCalled)
-        }
+        
+        let view = ProfileViewSpy()
+        let presenter = ProfilePresenter(view: view)
+        
+        presenter.logoutButtonTapped()
+        
+        XCTAssertTrue(view.showLogoutAlertCalled)
+    }
+    
+    func testConfirmLogout_NavigatesToSplashScreen() {
+        let view = ProfileViewSpy()
+        let presenter = ProfilePresenter(view: view)
+        
+        presenter.confirmLogout()
+        
+        XCTAssertTrue(view.navigateToSplashScreenCalled)
+    }
 }
 
 final class ProfileViewSpy: ProfileViewProtocol {
@@ -51,6 +60,11 @@ final class ProfileViewSpy: ProfileViewProtocol {
     var receivedLogin: String?
     var receivedBio: String?
     var receivedAvatarURL: URL?
+    
+    var navigateToSplashScreenCalled = false
+    func navigateToSplashScreen() {
+        navigateToSplashScreenCalled = true
+    }
     
     func updateProfile(name: String, login: String, bio: String) {
         updateProfileCalled = true

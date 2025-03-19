@@ -35,11 +35,10 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
         }
         
         let authHelper = AuthHelper()
-        let webViewPresenter = WebViewPresenter(authHelper: authHelper)
-        
-        webViewViewController.presenter = webViewPresenter
-        webViewPresenter.view = webViewViewController
-        webViewPresenter.delegate = self
+        let presenter = WebViewPresenter(authHelper: authHelper)
+        webViewViewController.presenter = presenter
+        presenter.view = webViewViewController
+        presenter.delegate = self
         webViewViewController.delegate = self
         
         print("✅ Делегат WebViewViewController установлен")

@@ -85,10 +85,8 @@ final class WebViewTests: XCTestCase {
             XCTFail("URL не создан")
             return
         }
-
-        let request = URLRequest(url: url)
         
-        let code = authHelper.code(from: request)
+        let code = authHelper.code(from: url)
 
         XCTAssertEqual(code, "test code")
     }
@@ -110,6 +108,8 @@ final class WebViewPresenterSpy: WebViewPresenterProtocol {
     func code(from navigationAction: WKNavigationAction) -> String? {
         return nil
     }
+    func didRequestNavigationPolicy(for url: URL?, completion: @escaping (NavigationPolicy) -> Void) {}
+
 }
 
 final class WebViewViewControllerSpy: WebViewViewControllerProtocol {

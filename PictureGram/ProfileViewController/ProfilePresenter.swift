@@ -5,11 +5,12 @@
 //  Created by Василий Ханин on 18.03.2025.
 //
 
-import UIKit
+import Foundation
 
 protocol ProfilePresenterProtocol {
     func viewDidLoad()
     func logoutButtonTapped()
+    func confirmLogout()
 }
 
 final class ProfilePresenter: ProfilePresenterProtocol {
@@ -89,6 +90,6 @@ final class ProfilePresenter: ProfilePresenterProtocol {
 
     func confirmLogout() {
         ProfileLogoutService.shared.logout()
-        UIApplication.shared.windows.first?.rootViewController = SplashViewController()
+        view?.navigateToSplashScreen()
     }
 }
