@@ -8,15 +8,24 @@
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
+// MARK: - ProfileViewProtocol
+protocol ProfileViewProtocol: AnyObject {
+    func updateProfile(name: String, login: String, bio: String)
+    func updateAvatar(url: URL?)
+    func showLogoutAlert()
+    func navigateToSplashScreen()
+}
+
+final class ProfileViewController: UIViewController, ProfileViewProtocol {
     
-    private let profileImageView: UIImageView = {
+    // MARK: - UI Elements
+    let profileImageView: UIImageView = {
         let image = UIImage(named: "Avatar")
         let view = UIImageView(image: image)
         return view
     }()
     
-    private let nameLabel: UILabel = {
+    let nameLabel: UILabel = {
         let label = UILabel()
         label.text = "Екатерина Новикова"
         label.font = UIFont(name: "SFPro-Bold", size: 23)
@@ -24,7 +33,7 @@ final class ProfileViewController: UIViewController {
         return label
     }()
     
-    private let loginLabel: UILabel = {
+    let loginLabel: UILabel = {
         let label = UILabel()
         label.text = "@ekaterina_nov"
         label.font = UIFont(name: "SFPro-Regular", size: 13)
@@ -32,7 +41,7 @@ final class ProfileViewController: UIViewController {
         return label
     }()
     
-    private let descriptionLabel: UILabel = {
+    let descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "Hello, world!"
         label.font = UIFont(name: "SFPro-Regular", size: 13)
@@ -40,133 +49,101 @@ final class ProfileViewController: UIViewController {
         return label
     }()
     
-    private let exitButton: UIButton = {
+    let exitButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "exitButtonImage")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.accessibilityIdentifier = "Logout"
         return button
     }()
     
-    private var profile: Profile?
-    private var profileImageServiceObserver: NSObjectProtocol?
-    private var profileServiceObserver: NSObjectProtocol?
+    // MARK: - Properties
+    private var presenter: ProfilePresenterProtocol?
     
+    // MARK: - Init
+    init(presenter: ProfilePresenterProtocol?) {
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.backgroundColor = .ypBlack
-        setupViews()
-        setupConstraints()
-        updateUI()
-        showLogoutAllert()
-        
-        profileServiceObserver = NotificationCenter.default.addObserver (
-            forName: ProfileService.didChangeNotification,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            guard let self = self else { return }
-            self.updateUI()
-        }
-        
-        profileImageServiceObserver = NotificationCenter.default.addObserver(
-            forName: ProfileImageService.didChangeNotification,
-            object: nil,
-            queue: .main
-        ) { [weak self] notification in
-            guard let self = self else { return }
-            
-            print("📬 [ProfileViewController]: Получено уведомление от ProfileImageService")
-            if let url = notification.userInfo?["URL"] as? String {
-                print("📬 [ProfileViewController]: URL из userInfo: \(url)")
-            }
-            self.updateAvatar()
-        }
-        
-        updateAvatar()
+        configureUI()
+        presenter?.viewDidLoad()
     }
     
-    deinit {
-        if let profileServiceObserver = profileServiceObserver {
-            NotificationCenter.default.removeObserver(profileServiceObserver)
-        }
-        if let profileImageServiceObserver = profileImageServiceObserver {
-            NotificationCenter.default.removeObserver(profileImageServiceObserver)
-        }
+    // MARK: - ProfileViewProtocol Methods
+    func updateProfile(name: String, login: String, bio: String) {
+        nameLabel.text = name
+        loginLabel.text = login
+        descriptionLabel.text = bio
     }
     
-    private func showLogoutAllert() {
-        let exitAction = UIAction { [weak self] _ in
-            guard let self = self else { return }
-            
-            let alert = UIAlertController(
-                title: "Пока, пока!",
-                message: "Уверены что хотите выйти?",
-                preferredStyle: .alert
-            )
-            
-            let yesAction = UIAlertAction(title: "Да", style: .default) { _ in
-                ProfileLogoutService.shared.logout()
-                
-                UIApplication.shared.windows.first?.rootViewController = SplashViewController()
-            }
-            
-            let noAction = UIAlertAction(title: "Нет", style: .default)
-            
-            alert.addAction(yesAction)
-            alert.addAction(noAction)
-            
-            self.present(alert, animated: true)
-        }
-        
-        exitButton.addAction(exitAction, for: .touchUpInside)
-    }
-    
-    private func updateAvatar() {
-        guard let avatarURL = ProfileImageService.shared.avatarURL,
-              let url = URL(string: avatarURL) else {
-            print("❌ [updateAvatar]: avatarURL отсутствует или некорректен")
+    func updateAvatar(url: URL?) {
+        guard let url = url else {
             profileImageView.image = UIImage(named: "Avatar")
             return
         }
-        
-        print("✅ [updateAvatar]: Загружаем аватар по URL: \(url)")
         
         profileImageView.kf.setImage(
             with: url,
             placeholder: UIImage(named: "Avatar"),
             options: [.transition(.fade(0.3))]
-        ) { result in
-            switch result {
-            case .success:
-                print("✅ [updateAvatar]: Аватар успешно установлен")
-            case .failure(let error):
-                print("❌ [updateAvatar]: Ошибка загрузки аватара: \(error.localizedDescription)")
-            }
-        }
+        )
     }
     
-    private func updateUI() {
-        if let profile = ProfileService.shared.profile {
-            print("✅ Отображаем профиль из памяти: \(profile.name)")
-            nameLabel.text = profile.name
-            loginLabel.text = profile.loginName
-            descriptionLabel.text = profile.bio ?? "Нет описания"
-        } else {
-            print("❌ Профиль отсутствует в памяти")
-            view.subviews.forEach { $0.removeFromSuperview() }
-            setupViews()
-            setupConstraints()
+    func showLogoutAlert() {
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены что хотите выйти?",
+            preferredStyle: .alert
+        )
+        
+        let yesAction = UIAlertAction(title: "Да", style: .default) { [weak self] _ in
+            self?.presenter?.confirmLogout()
         }
+        
+        let noAction = UIAlertAction(title: "Нет", style: .default)
+        
+        alert.addAction(yesAction)
+        alert.addAction(noAction)
+        
+        present(alert, animated: true)
     }
     
-    private func setupViews() {
+    func setPresenter(_ presenter: ProfilePresenterProtocol) {
+        self.presenter = presenter
+    }
+    
+    func navigateToSplashScreen() {
+        UIApplication.shared.windows.first?.rootViewController = SplashViewController()
+    }
+    
+    // MARK: - UI Setup
+    private func configureUI() {
+        view.backgroundColor = .ypBlack
+        
+        profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        profileImageView.layer.cornerRadius = 35
+        profileImageView.clipsToBounds = true
+        
         [profileImageView, nameLabel, loginLabel, descriptionLabel, exitButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
         
-        profileImageView.layer.cornerRadius = profileImageView.frame.height / 2
-        profileImageView.clipsToBounds = true
+        configureExitButton()
+        setupConstraints()
+    }
+    
+    private func configureExitButton() {
+        exitButton.addAction(UIAction { [weak self] _ in
+            self?.presenter?.logoutButtonTapped()
+        }, for: .touchUpInside)
     }
     
     private func setupConstraints() {
@@ -192,5 +169,3 @@ final class ProfileViewController: UIViewController {
         ])
     }
 }
-
-

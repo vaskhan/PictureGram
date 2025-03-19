@@ -34,10 +34,16 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
             return
         }
         
+        let authHelper = AuthHelper()
+        let presenter = WebViewPresenter(authHelper: authHelper)
+        webViewViewController.presenter = presenter
+        presenter.view = webViewViewController
+        presenter.delegate = self
         webViewViewController.delegate = self
+        
         print("✅ Делегат WebViewViewController установлен")
     }
-
+    
     
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         UIBlockingProgressHUD.show()
@@ -57,7 +63,9 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
                         }
                         
                         print("🔍 Delegate в AuthViewController: \(self.delegate == nil ? "nil" : "установлен")")
-                        self.delegate?.didAuthenticate(self)
+                        self.dismiss(animated: true) {
+                            self.delegate?.didAuthenticate(self)
+                        }
                     }
                     
                 case .failure(let error):
